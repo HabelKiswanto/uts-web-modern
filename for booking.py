@@ -1,9 +1,16 @@
 import pymysql
 import datetime
-import flask
 
 def is_room_available(cursor, booking_date, booking_time, room_name):
-    query = f"SELECT * FROM room_bookings WHERE booking_date = '{booking_date}' AND booking_time = '{booking_time}' AND room_name = '{room_name}'"
+    query = f"""
+        SELECT * 
+        FROM room_bookings 
+        WHERE room_name = '{room_name}'
+        AND booking_date = '{booking_date}'
+        AND (
+            ('{booking_time}' BETWEEN booking_time AND end_time)
+            OR ('{end_time}' BETWEEN booking_time AND end_time)
+        )"""
     cursor.execute(query)
     return cursor.fetchone() is None
 
@@ -15,7 +22,7 @@ def has_fine(cursor, student_id):
 
 def is_valid_booking_time(booking_time, end_time):
     opening_booking_time = datetime.time(7, 30)
-    closing_booking_time = datetime.time(21, 30)
+    closing_booking_time = datetime.time(22, 00)
     return opening_booking_time <= booking_time <= closing_booking_time and booking_time <= end_time <= closing_booking_time
 
 def book_room(cursor, student_id, booking_date, booking_time_str, end_time_str, room_name):
@@ -32,6 +39,8 @@ def book_room(cursor, student_id, booking_date, booking_time_str, end_time_str, 
         return "Ruangan sudah dibooking pada tanggal dan jam tersebut. Silakan coba lagi nanti."
     elif booking_duration > 2 * 3600: 
         return "Ruangan hanya dapat dibooking selama 2 jam per hari."
+    elif booking_duration < 1800:  # 1800 seconds = 30 minutes
+        return "Ruangan minimal dibooking 30 menit"
     elif end_time > datetime.time(22, 0):  
         return "Waktu selesai pemesanan tidak dapat melebihi pukul 22:00."
     else:
@@ -43,9 +52,9 @@ connection = pymysql.connect(host='localhost', user='root', password='', databas
 cursor = connection.cursor()
 
 student_id = 1
-booking_date = '2023-10-12'
-booking_time = '12:00:00' 
-end_time = '13:00:00'  
+booking_date = '2023-10-16'
+booking_time = '8:00:00'
+end_time = '10:00:00'  
 room_name = 'Ruangan A'
 
 result = book_room(cursor, student_id, booking_date, booking_time, end_time, room_name)
@@ -53,7 +62,5 @@ print(result)
 
 cursor.close()
 connection.close()
-
-
 
 #duration between end_time and booking_time
