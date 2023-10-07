@@ -52,3 +52,19 @@ class Catalogue(db.Model):
     status = db.Column(db.String(255))
 
 ### models ###
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+@app.route('/reservation')
+def reservation():
+    return render_template('reservation.html')
+
+@app.route('/schedule')
+def schedule():
+    return render_template('schedule.html')
