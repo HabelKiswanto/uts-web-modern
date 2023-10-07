@@ -19,6 +19,10 @@ body{
   align-items: center;
   width: 75%;
 }
+.schedule-container, .catalogue-container{
+  outline: solid 1px blue;
+  width: 100%;
+}
 
 .filter-sort-container{
   column-count: 2;
@@ -45,6 +49,7 @@ body{
 
 .table-bordered {
   border: 1px solid #dee2e6;
+  width: 100% !important;
 }
 
 .table-striped tbody tr:nth-child(odd) {
@@ -94,7 +99,7 @@ body{
 	top: 0;
 	left: 0;
 	width: 100%;
-	height: 100%;
+	height: 100vh;
 }
 
 .login-box{
@@ -105,6 +110,10 @@ body{
 	margin: auto;
 	position: relative;
 }
+.book-image{
+  float: left;
+}
+
 
 .logo, .login-button{
   display: flex;
@@ -113,4 +122,23 @@ body{
 }
 h1{
     color : #333;
+}
+
+.catalogue-editor-container{
+  margin: 0 auto;
+  justify-content: center;
+  width: 75%;
+}
+
+.book-details{
+  display: flex;
+}
+
+.book-image{
+  float: left;
+  margin-right: 10px;
+}
+
+.details-input{
+  flex: 1;
 }
