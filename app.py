@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import *
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime 
 
@@ -44,7 +44,7 @@ class Peminjaman_done(db.Model):
 class Catalogue(db.Model):
     id_buku = db.Column('id_buku',db.Integer,primary_key=True)
     nama_buku = db.Column(db.String(200))
-    deskripsi_buku = db.Column(db.LongText)
+    deskripsi_buku = db.Column(db.String(255))
     tanggal_masuk = db.Column(db.Date)
     tanggal_terbit = db.Column(db.Date)
     author = db.Column(db.String(255))
