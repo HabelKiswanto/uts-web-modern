@@ -14,17 +14,17 @@
             <div class="logo">
                 <img src="{{ url_for('static', filename='cit-logo-white.png') }}" alt="Bootstrap" width="100" height="80">
             </div>
-            <h3>Email</h3>
+            <h3>NIM</h3>
             <form method="POST" action="/login_user">
-            <div class="email-input">
+            <div class="nim-input">
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" aria-label="E-mail" aria-describedby="basic-addon2">
+                    <input type="text" class="form-control" aria-label="nim" aria-describedby="basic-addon2" name="nim" id="nim">
                 </div>              
             </div>
             <h3>Password</h3>
             <div class="password-input">
                 <div class="input-group mb-3">
-                    <input type="password" class="form-control" aria-label="Password" aria-describedby="basic-addon2">
+                    <input type="password" class="form-control" aria-label="Password" aria-describedby="basic-addon2" name="password" nim="password">
                 </div>
             </div>
             <div class="stay-in">

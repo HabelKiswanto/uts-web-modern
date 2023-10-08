@@ -4,7 +4,7 @@ from datetime import datetime
 
 app = Flask(__name__)
 
-app.secret_key = 'And blood black nothingness begins to spin. A series of cells interlinked within cells interlinked within cells interlinked within one stem'
+app.secret_key = 'And blood black nothingness began to spin. A series of cells interlinked within cells interlinked within cells interlinked within one stem'
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@127.0.0.1/perpus_calvin'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -75,14 +75,14 @@ def schedule():
 def user_login():
     _method = request.method
     if _method == 'POST':
-        nim = request.form.get("E-mail")
-        password = request.form.get("Password")
-
+        nim = request.form.get("nim")
+        password = request.form.get("password")
+        
         student = Students.query.filter_by(nim=nim).first()
 
         if student and (password == student.password):
             flash('Login successful!', 'success')
-            return redirect(url_for('/'))
+            return redirect(url_for('index'))
         else:
             flash('Invalid credentials. Please try again.', 'danger')
             return redirect(url_for('login'))
