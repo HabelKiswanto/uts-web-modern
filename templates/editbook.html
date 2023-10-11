@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book Catalog</title>
+</head>
+<body>
+    <h1>Book Catalog</h1>
+    
+    <!-- Form to Add a New Book -->
+    <h2>Add a New Book</h2>
+    <form id="addBookForm">
+        <label for="nama_buku">Nama Buku:</label>
+        <input type="text" id="nama_buku" name="nama_buku" required><br>
+        <label for="deskripsi_buku">Deskripsi Buku:</label>
+        <input type="text" id="deskripsi_buku" name="deskripsi_buku" required><br>
+        <label for="tanggal_masuk">Tanggal Masuk:</label>
+        <input type="date" id="tanggal_masuk" name="tanggal_masuk" required><br>
+        <label for="tanggal_terbit">Tanggal Terbit:</label>
+        <input type="date" id="tanggal_terbit" name="tanggal_terbit" required><br>
+        <label for="author">Author:</label>
+        <input type="text" id="author" name="author" required><br>
+        <label for="genre">Genre:</label>
+        <input type="text" id="genre" name="genre" required><br>
+        <label for="status">Status:</label>
+        <input type="text" id="status" name="status" required><br>
+        <button type="submit">Add Book</button>
+    </form>
+
+    <!-- Form to Update Book Details -->
+    <h2>Update Book Details</h2>
+    <form id="updateBookForm">
+        <label for="book_id">Book ID:</label>
+        <input type="number" id="book_id" name="book_id" required><br>
+        <label for="updated_nama_buku">Nama Buku:</label>
+        <input type="text" id="updated_nama_buku" name="nama_buku" required><br>
+        <label for="updated_deskripsi_buku">Deskripsi Buku:</label>
+        <input type="text" id="updated_deskripsi_buku" name="deskripsi_buku" required><br>
+        <label for="updated_tanggal_masuk">Tanggal Masuk:</label>
+        <input type="date" id="updated_tanggal_masuk" name="tanggal_masuk" required><br>
+        <label for="updated_tanggal_terbit">Tanggal Terbit:</label>
+        <input type="date" id="updated_tanggal_terbit" name="tanggal_terbit" required><br>
+        <label for="updated_author">Author:</label>
+        <input type="text" id="updated_author" name="author" required><br>
+        <label for="updated_genre">Genre:</label>
+        <input type="text" id="updated_genre" name="genre" required><br>
+        <label for="updated_status">Status:</label>
+        <input type="text" id="updated_status" name="status" required><br>
+        <button type="submit">Update Book Details</button>
+    </form>
+
+    <!-- Form to Remove a Book -->
+    <h2>Remove a Book</h2>
+    <form id="removeBookForm">
+        <label for="remove_book_id">Book ID:</label>
+        <input type="number" id="remove_book_id" name="book_id" required><br>
+        <button type="submit">Remove Book</button>
+    </form>
+
+    <!-- Display Messages -->
+    <div id="message"></div>
+
+    <script>
+        // Function to send a POST request to add a new book
+        document.getElementById('addBookForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            fetch('/add_book', {
+                method: 'POST',
+                body: JSON.stringify(Object.fromEntries(formData.entries())),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('message').textContent = data.message;
+                });
+        });
+
+        // Function to send a PUT request to update book details
+        document.getElementById('updateBookForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const bookId = formData.get('book_id');
+            fetch(`/update_book/${bookId}`, {
+                method: 'PUT',
+                body: JSON.stringify(Object.fromEntries(formData.entries())),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('message').textContent = data.message;
+                });
+        });
+
+        // Function to send a DELETE request to remove a book
+        document.getElementById('removeBookForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const bookId = document.getElementById('remove_book_id').value;
+            fetch(`/remove_book/${bookId}`, {
+                method: 'DELETE',
+            })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('message').textContent = data.message;
+                });
+        });
+    </script>
+</body>
+</html>

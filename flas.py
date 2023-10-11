@@ -33,9 +33,6 @@ def add_new_book():
         return jsonify({"message": "Book added successfully."})
     except Exception as e:
         return jsonify({"error": str(e)})
-    finally:
-        if connection:
-            connection.close()
 
 @app.route('/update_book/<int:book_id>', methods=['PUT'])
 def change_book_details(book_id):
@@ -60,9 +57,6 @@ def change_book_details(book_id):
         return jsonify({"message": "Book details updated successfully."})
     except Exception as e:
         return jsonify({"error": str(e)})
-    finally:
-        if connection:
-            connection.close()
 
 @app.route('/remove_book/<int:book_id>', methods=['DELETE'])
 def remove_book(book_id):
@@ -75,13 +69,10 @@ def remove_book(book_id):
         return jsonify({"message": "Book removed successfully."})
     except Exception as e:
         return jsonify({"error": str(e)})
-    finally:
-        if connection:
-            connection.close()
 
 @app.route('/')
 def index():
-    return send_from_directory('static', 'editbook.html')
+    return send_from_directory('templates', 'editbook.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
