@@ -61,7 +61,11 @@ def index():
 
 @app.route('/login')
 def login():
-    return render_template('login.html')
+    login_status = request.cookies.get('login_status')
+    if login_status == 'logged in':
+        return render_template('index.html')
+    else:
+        return render_template('login.html')
 
 @app.route('/reservation')
 def reservation():
@@ -71,19 +75,39 @@ def reservation():
 def schedule():
     return render_template('schedule.html')
 
-@app.route('/login_user',methods=["post","get"])
-def user_login():
-    _method = request.method
-    if _method == 'POST':
-        nim = request.form.get("nim")
-        password = request.form.get("password")
-        
-        student = Students.query.filter_by(nim=nim).first()
+@app.route('/admin')
+def admin_login_page():
+    return render_template('/admin/login.html')
 
+@app.route('/admin/catalogue')
+def admin_catalogue():
+    return render_template('/admin/catalogue.html')
+
+@app.route('/admin/catalogue/edit')
+def admin_catalogue_edit():
+    return render_template('/admin/catalogue-edit.html')
+
+@app.route('/admin/schedule')
+def admin_schedule():
+    return render_template('/admin/admin_schedule.html')
+
+
+@app.route('/login_user',methods=["post"])
+def user_login():
+    nim = request.form.get("nim")
+    password = request.form.get("password")
+    if nim != None and password != None:
+        student = Students.query.filter_by(nim=nim).first()
         if student and (password == student.password):
             flash('Login successful!', 'success')
-            return redirect(url_for('index'))
-        else:
-            flash('Invalid credentials. Please try again.', 'danger')
-            return redirect(url_for('login'))
+            resp = make_response(redirect(url_for('index')))
+            resp.set_cookie('login_status','logged in')
+            resp.set_cookie('account_type','user')
+            resp.set_cookie('nim',nim)
+            return resp
+        
+    flash('Invalid credentials. Please try again.', 'danger')
+    return redirect(url_for('login'))
+    
+
 
