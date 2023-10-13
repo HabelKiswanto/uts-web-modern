@@ -23,7 +23,7 @@ def reservation():
 def schedule():
     return render_template('schedule.html',title='Schedule ')
 
-@app.route('/admin')
+@app.route('/admin/login')
 def admin_login_page():
     return render_template('/admin/login.html')
 
@@ -38,6 +38,11 @@ def admin_catalogue_edit():
 @app.route('/admin/schedule')
 def admin_schedule():
     return render_template('/admin/admin_schedule.html')
+
+
+@app.route('/admin/borrow')
+def admin_borrow():
+    return render_template('/admin/borrow.html')
 
 
 @app.route('/login_user',methods=["post"])
@@ -57,6 +62,23 @@ def user_login():
     flash('Invalid credentials. Please try again.', 'danger')
     return redirect(url_for('login'))
 
+@app.route('/login_admin',methods=["post"])
+def admin_login():
+    username = request.form.get("username")
+    password = request.form.get("password")
+    print("username: ",username, password)
+    if username != None and password != None:
+        acc = Admin.query.filter_by(username=username).first()
+        if acc and (password == acc.password):
+            flash('Login successful!', 'success')
+            resp = make_response(redirect(url_for('admin_catalogue')))
+            resp.set_cookie('login_status','logged in')
+            resp.set_cookie('account_type','admin')
+            resp.set_cookie('username',username)
+            return resp
+        
+    flash('Invalid credentials. Please try again.', 'danger')
+    return redirect(url_for('admin_login_page'))
 
 #Habel
 @app.route('/add_book', methods=['POST'])
