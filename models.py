@@ -11,11 +11,21 @@ class Room_bookings(db.Model):
 
 class Students(db.Model):
     nim = db.Column('nim',db.Integer,primary_key=True)
-    full_name = db.Column(db.String)
-    password = db.Column(db.String)
+    full_name = db.Column(db.String(255))
+    password = db.Column(db.String(255))
     fine = db.Column(db.Float,default=0.0)
     room_bookings = db.relationship('Room_bookings',backref='room_bookings')
     peminjaman_ongoing = db.relationship('Peminjaman_ongoing',backref='peminjaman_ongoing')
+
+
+class Admin(db.Model):
+    username = db.Column('username',db.String(255),primary_key=True)
+    password = db.Column(db.String(255))
+    
+    def __init__(self,_username,_password):
+        self.username = _username
+        self.password = _password
+    
 
 class Peminjaman_ongoing(db.Model):
     id_peminjaman = db.Column('id_peminjaman',db.Integer,primary_key=True)
