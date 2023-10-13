@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <title>Book Catalog</title>
 </head>
 <body>
@@ -12,35 +12,45 @@
 <!-- stan kerjain yang ini -->
 
 
-    <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <img src="cit-logo-white.png" alt="Logo" width="50" height="40">
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-              <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="###">Catalogue</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="###">Schedule</a>
-                  </li>
-                </ul>
-              </ul>
-              <ul class="navbar-nav ms-auto">
-                  <li class="nav-item">
-                    <h3><span class="badge bg-success">Admin Logged In</span></h3>
-                  </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+<nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+  <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+          <img src="cit-logo-white.png" alt="Logo" width="50" height="40">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+              <li class="nav-item">
+                  <a class="nav-link" aria-current="page" href="###">Catalogue</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="###">Schedule</a>
+              </li>
+              <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="sectionDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Add
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="sectionDropdown">
+                      <li><a class="dropdown-item" href="#" onclick="showSection('add-book-section')">Add Book</a></li>
+                      <li><a class="dropdown-item" href="#" onclick="showSection('update-book-section')">Update Book</a></li>
+                      <li><a class="dropdown-item" href="#" onclick="showSection('remove-book-section')">Remove Book</a></li>
+                  </ul>
+              </li>
+          </ul>
+          <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                  <h3><span class="badge bg-success">Admin Logged In</span></h3>
+              </li>
+          </ul>
+      </div>
+  </div>
+</nav>
 
     <div class="container">
     <!-- Form to Add a New Book -->
+    <section id="add-book-section">
       <div class="row justify-content-center">
         <div class="col-md-5 mr-4 mb-8">
           <h2 class="text-center">Add a New Book</h2>
@@ -78,7 +88,7 @@
             </div>
             <div class="row mb-3">
               <label for="status" class="col-sm-3 col-form-label">Image Link:</label>
-              <input type="text" id="link" name="link" class="col-sm-9 form-control" required>
+              <input type="text" id="cover_link" name="cover_link" class="col-sm-9 form-control" required>
             </div>
             <div class="row">
               <div class="col-12 text-center">
@@ -87,46 +97,51 @@
             </div>
           </form>
         </div>
-
+      </section>
 
         <!-- Form to Update Book Details -->
+      <section id="update-book-section">
         <div class="col-md-5 ml-4 mb-8">
           <h2 class="text-center">Update Book Details</h2>
           <form id="updateBookForm" class="col-12">
             <div class="row mb-3">
-              <label for="nama_buku" class="col-sm-3 col-form-label">Nama Buku:</label>
-              <input type="text" id="nama_buku" name="nama_buku" class="col-sm-9 form-control" required>
+              <label for="id_buku" class="col-sm-3 col-form-label">Id Buku:</label>
+              <input type="text" id="id_buku" name="id_buku" class="col-sm-9 form-control" required>
             </div>
             <div class="row mb-3">
-              <label for="deskripsi_buku" class="col-sm-3 col-form-label">Deskripsi Buku:</label>
-              <input type="text" id="deskripsi_buku" name="deskripsi_buku" class="col-sm-9 form-control" required>
+              <label for="updated_nama_buku" class="col-sm-3 col-form-label">Nama Buku:</label>
+              <input type="text" id="updated_nama_buku" name="updated_nama_buku" class="col-sm-9 form-control" required>
             </div>
             <div class="row mb-3">
-              <label for="tanggal_masuk" class="col-sm-3 col-form-label">Tanggal Masuk:</label>
-              <input type="date" id="tanggal_masuk" name="tanggal_masuk" class="col-sm-9 form-control" required>
+              <label for="updated_deskripsi_buku" class="col-sm-3 col-form-label">Deskripsi Buku:</label>
+              <input type="text" id="updated_deskripsi_buku" name="updated_deskripsi_buku" class="col-sm-9 form-control" required>
             </div>
             <div class="row mb-3">
-              <label for="tanggal_terbit" class="col-sm-3 col-form-label">Tanggal Terbit:</label>
-              <input type="date" id="tanggal_terbit" name="tanggal_terbit" class="col-sm-9 form-control" required>
+              <label for="updated_tanggal_masuk" class="col-sm-3 col-form-label">Tanggal Masuk:</label>
+              <input type="date" id="updated_tanggal_masuk" name="updated_tanggal_masuk" class="col-sm-9 form-control" required>
             </div>
             <div class="row mb-3">
-              <label for="author" class="col-sm-3 col-form-label">Author:</label>
-              <input type="text" id="author" name="author" class="col-sm-9 form-control" required>
+              <label for="updated_tanggal_terbit" class="col-sm-3 col-form-label">Tanggal Terbit:</label>
+              <input type="date" id="updated_tanggal_terbit" name="updated_tanggal_terbit" class="col-sm-9 form-control" required>
             </div>
             <div class="row mb-3">
-              <label for="genre" class="col-sm-3 col-form-label">Genre:</label>
-              <input type="text" id="genre" name="genre" class="col-sm-9 form-control" required>
+              <label for="updated_author" class="col-sm-3 col-form-label">Author:</label>
+              <input type="text" id="updated_author" name="updated_author" class="col-sm-9 form-control" required>
             </div>
             <div class="row mb-3">
-              <label for="status" class="col-sm-3 col-form-label">Status:</label>
-              <select class="col-sm-9 form-select" id="status" name="status" required>
+              <label for="updated_genre" class="col-sm-3 col-form-label">Genre:</label>
+              <input type="text" id="updated_genre" name="updated_genre" class="col-sm-9 form-control" required>
+            </div>
+            <div class="row mb-3">
+              <label for="updated_status" class="col-sm-3 col-form-label">Status:</label>
+              <select class="col-sm-9 form-select" id="updated_status" name="updated_status" required>
                 <option selected value="available">Available</option>
                 <option value="unavailable">Unavailable</option>
               </select>
             </div>
             <div class="row mb-3">
-              <label for="status" class="col-sm-3 col-form-label">Image Link:</label>
-              <input type="text" id="link" name="link" class="col-sm-9 form-control" required>
+              <label for="cover_link" class="col-sm-3 col-form-label">Image Link:</label>
+              <input type="text" id="cover_link" name="cover_link" class="col-sm-9 form-control" required>
             </div>
             <div class="row">
               <div class="col-12 text-center">
@@ -135,8 +150,10 @@
             </div>
           </form>
         </div>
+      </section>
 
           <!-- Form to Remove a Book -->
+        <section id="remove-book-section">
           <h2 class="text-center">Remove a Book</h2>
           <form id="removeBookForm" class="col-8">
             <div class="row mb-3">
@@ -149,6 +166,7 @@
               </div>
             </div>
           </form>
+        </section>
           
           <!-- Display Messages -->
           <div id="message"></div>
@@ -195,40 +213,46 @@
     });
 
     // Function to handle form submission to update book details
-    document.getElementById('updateBookForm').addEventListener('submit', function (event) {
-        event.preventDefault();
-        const formData = new FormData(this);
-        const bookId = formData.get('book_id');
-        const data = {
-            nama_buku: formData.get('updated_nama_buku'),
-            deskripsi_buku: formData.get('updated_deskripsi_buku'),
-            tanggal_masuk: formData.get('updated_tanggal_masuk'),
-            tanggal_terbit: formData.get('updated_tanggal_terbit'),
-            author: formData.get('updated_author'),
-            genre: formData.get('updated_genre'),
-            status: formData.get('updated_status'),
-            cover_link: formData.get('cover_link')
-        };
+    
+  document.getElementById('updateBookForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+    const formData = new FormData(this);
+    const bookId = formData.get('id_buku');  // Use the correct ID
+    const data = {
+      updated_nama_buku: formData.get('updated_nama_buku'),
+      updated_deskripsi_buku: formData.get('updated_deskripsi_buku'),
+      updated_tanggal_masuk: formData.get('updated_tanggal_masuk'),
+      updated_tanggal_terbit: formData.get('updated_tanggal_terbit'),
+      updated_author: formData.get('updated_author'),
+      updated_genre: formData.get('updated_genre'),
+      updated_status: formData.get('updated_status'),
+      cover_link: formData.get('cover_link')
+    };
 
-        fetch(`/update_book/${bookId}`, {
-            method: 'PUT',
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        })
+    if (confirm('Double check the book\'s data')) {
+      fetch(`/update_book/${bookId}`, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
         .then(response => response.json())
         .then(data => {
-            if (data.message) {
-                alert("Data updated successfully");
-            } else if (data.error) {
-                alert("Data update failed");
-            }
+          if (data.message) {
+            alert("Data updated successfully");
+          } else if (data.error) {
+            alert("Data update failed");
+          }
         })
         .catch(error => {
-            alert("An error occurred while updating data");
+          alert("An error occurred while updating data");
         });
-    });
+    } else {
+      alert("Data not updated as per your request");
+    }
+  });
+
 
     // Function to handle form submission to remove a book
     document.getElementById('removeBookForm').addEventListener('submit', function (event) {
@@ -249,6 +273,18 @@
           alert("An error occurred while removing the book");
       });
   });
+
+  function showSection(sectionId) {
+        const sections = ['add-book-section', 'update-book-section', 'remove-book-section'];
+
+        // Hide all sections
+        sections.forEach(section => {
+            document.getElementById(section).style.display = 'none';
+        });
+
+        // Show the selected section
+        document.getElementById(sectionId).style.display = 'block';
+    }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/48638eddb5.js" crossorigin="anonymous"></script>

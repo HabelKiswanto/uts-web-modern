@@ -16,6 +16,7 @@ def add_new_book(book_data):
             book_data['author'],
             book_data['genre'],
             book_data['status']
+            book_data['']
         ))
         connection.commit()
         print("New book added successfully.")
