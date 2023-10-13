@@ -72,7 +72,7 @@
       </div>
       
       
-      <div class="books">
+      <div class="books" id="bookContainer">
         <div class="card" style="width: 18rem;">
           <img src="{{ url_for('static', filename='cit-logo.png') }}" class="card-img-top" alt="No Image">
             <div class="card-body">
@@ -89,3 +89,40 @@
     <script src="https://kit.fontawesome.com/48638eddb5.js" crossorigin="anonymous"></script>
   </body>
 </html>
+
+<script>
+  // Function to fetch and display books
+  function displayBooks() {
+      fetch('/get_books') // Replace with the Flask route to fetch book data
+          .then(response => response.json())
+          .then(data => {
+              const bookContainer = document.getElementById('bookContainer');
+
+              // Clear existing content
+              bookContainer.innerHTML = '';
+
+              // Iterate through the books and create card elements
+              data.forEach(book => {
+                  const card = document.createElement('div');
+                  card.className = 'card';
+
+                  card.innerHTML = `
+                      <img src="${book.cover_link}" class="card-img-top" alt="Book Cover">
+                      <div class="card-body">
+                          <h5 class="card-title">${book.nama_buku}</h5>
+                          <p class="card-text">${book.deskripsi_buku}</p>
+                          <a href="#" class="btn btn-primary">Details</a>
+                      </div>
+                  `;
+
+                  bookContainer.appendChild(card);
+              });
+          })
+          .catch(error => {
+              console.error('Error fetching book data:', error);
+          });
+  }
+
+  // Call the function to initially display books
+  displayBooks();
+</script>

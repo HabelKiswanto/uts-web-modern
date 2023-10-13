@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, send_from_directory
 import pymysql
-
-app = Flask(__name__)
+import re
+# app = Flask(__name__)
 
 # Define your database connection settings here
 db_host = 'localhost'
@@ -18,7 +18,7 @@ def add_new_book():
         book_data = request.json
 
         # Insert a new book into the catalog table
-        sql = "INSERT INTO catalogue (nama_buku, deskripsi_buku, tanggal_masuk, tanggal_terbit, author, genre, status) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        sql = "INSERT INTO catalogue (nama_buku, deskripsi_buku, tanggal_masuk, tanggal_terbit, author, genre, status, cover_link) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
         cursor.execute(sql, (
             book_data['nama_buku'],
             book_data['deskripsi_buku'],
@@ -26,7 +26,9 @@ def add_new_book():
             book_data['tanggal_terbit'],
             book_data['author'],
             book_data['genre'],
-            book_data['status']
+            book_data['status'],
+            book_data['cover_link']
+
         ))
         connection.commit()
         print("New book added successfully.")
@@ -42,7 +44,7 @@ def change_book_details(book_id):
         new_data = request.json
 
         # Update book details in the catalog table
-        sql = "UPDATE catalogue SET nama_buku=%s, deskripsi_buku=%s, tanggal_masuk=%s, tanggal_terbit=%s, author=%s, genre=%s, status=%s WHERE id_buku=%s"
+        sql = "UPDATE catalogue SET nama_buku=%s, deskripsi_buku=%s, tanggal_masuk=%s, tanggal_terbit=%s, author=%s, genre=%s, status=%s, cover_link=%s WHERE id_buku=%s"
         cursor.execute(sql, (
             new_data['nama_buku'],
             new_data['deskripsi_buku'],
@@ -51,6 +53,7 @@ def change_book_details(book_id):
             new_data['author'],
             new_data['genre'],
             new_data['status'],
+            new_data['cover_link'],
             book_id
         ))
         connection.commit()
@@ -71,7 +74,7 @@ def remove_book(book_id):
         return jsonify({"error": str(e)})
 
 @app.route('/')
-def index():
+def editbooks():
     return send_from_directory('templates', 'editbook.html')
 
 if __name__ == '__main__':
