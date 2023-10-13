@@ -68,16 +68,18 @@
       
       
       <div class="books" id="bookContainer">
+        {% for book in catalogue_data %}
         <div class="card" style="width: 18rem;">
-          <img src="{{ url_for('static', filename='cit-logo.png') }}" class="card-img-top" alt="No Image">
+            <img src="{{ book.cover_link }}" class="card-img-top" alt="No Image">
             <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
+                <h5 class="card-title">{{ book.nama_buku }}</h5>
+                <p class="card-text">{{ book.deskripsi_buku }}</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
             </div>
         </div>
-      </div>
-
+        {% endfor %}
+    </div>
+    
       <div class="page-select"></div>
       </div>
-{% endblock content %}
+<!-- {% endblock content %} -->

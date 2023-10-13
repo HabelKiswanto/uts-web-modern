@@ -7,28 +7,17 @@
 <body>
     <h1>Book Catalogue</h1>
     <table>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Date of Entry</th>
-            <th>Date of Publication</th>
-            <th>Author</th>
-            <th>Genre</th>
-            <th>Status</th>
-            <th>Cover Image</th>
-        </tr>
         {% for book in catalogue_data %}
         <tr>
-            <td>{{ book[0] }}</td>
-            <td>{{ book[1] }}</td>
-            <td>{{ book[2] }}</td>
-            <td>{{ book[3] }}</td>
-            <td>{{ book[4] }}</td>
-            <td>{{ book[5] }}</td>
-            <td>{{ book[6] }}</td>
-            <td>{{ book[7] }}</td>
-            <td>{{ book[8] }}</td>
+            <td>{{ book.id_buku }}</td>
+            <td>{{ book.nama_buku }}</td>
+            <td>{{ book.deskripsi_buku }}</td>
+            <td>{{ book.tanggal_masuk }}</td>
+            <td>{{ book.tanggal_terbit }}</td>
+            <td>{{ book.author }}</td>
+            <td>{{ book.genre }}</td>
+            <td>{{ book.status }}</td>
+            <td>{{ book.cover_link }}</td>
         </tr>
         {% endfor %}
     </table>

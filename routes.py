@@ -3,9 +3,19 @@ from app import app
 from models import *
 
 @app.route('/')
-@app.route('/home')
 def index():
-    return render_template('index.html',title='Index')
+    catalogue_data = Catalogue.query.all()
+    return render_template('index.html', catalogue_data=catalogue_data, title='Index')
+
+def show_catalogue():
+    catalogue_data = Catalogue.query.all()
+    return render_template('dummy.html', catalogue_data=catalogue_data)
+
+@app.route('/dummy')
+def show_catalogue():
+    catalogue_data = Catalogue.query.all()
+    return render_template('dummy.html', catalogue_data=catalogue_data)
+
 
 @app.route('/login')
 def login():
