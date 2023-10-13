@@ -7,6 +7,17 @@
 <body>
     <h1>Book Catalogue</h1>
     <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Date of Entry</th>
+            <th>Date of Publication</th>
+            <th>Author</th>
+            <th>Genre</th>
+            <th>Status</th>
+            <th>Cover Image</th>
+        </tr>
         {% for book in catalogue_data %}
         <tr>
             <td>{{ book.id_buku }}</td>

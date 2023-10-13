@@ -39,7 +39,8 @@ def admin_login_page():
 
 @app.route('/admin/catalogue')
 def admin_catalogue():
-    return render_template('/admin/catalogue.html')
+    catalogue_data = Catalogue.query.all()
+    return render_template('admin/catalogue.html', catalogue_data=catalogue_data, title='Index')
 
 @app.route('/admin/catalogue/edit')
 def admin_catalogue_edit():
