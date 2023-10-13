@@ -31,8 +31,8 @@ class Peminjaman_ongoing(db.Model):
     id_peminjaman = db.Column('id_peminjaman',db.Integer,primary_key=True)
     id_buku = db.Column(db.Integer,db.ForeignKey('catalogue.id_buku')) 
     nim_peminjam = db.Column(db.Integer,db.ForeignKey('students.nim'))
-    tanggal_peminjaman = db.Column(db.Date)
-    waktu_peminjaman = db.Column(db.Time)
+    tanggal_peminjaman = db.Column(db.Date,default=datetime.now().date())
+    waktu_peminjaman = db.Column(db.Time,default=datetime.now().time())
 
 class Peminjaman_done(db.Model):
     id_peminjaman = db.Column('id_peminjaman',db.Integer,primary_key=True)

@@ -77,7 +77,6 @@ def user_login():
 def admin_login():
     username = request.form.get("username")
     password = request.form.get("password")
-    print("username: ",username, password)
     if username != None and password != None:
         acc = Admin.query.filter_by(username=username).first()
         if acc and (password == acc.password):
@@ -90,6 +89,30 @@ def admin_login():
         
     flash('Invalid credentials. Please try again.', 'danger')
     return redirect(url_for('admin_login_page'))
+
+
+@app.route('/borrow_book',methods=["post"])
+def borrow_book():
+    id_buku = request.form.get("id_buku")
+    nim = request.form.get("nim")
+    if id_buku != None and nim != None:
+        student = Students.query.filter_by(nim=nim).first()
+        book = Catalogue.query.filter_by(id_buku=id_buku).first()
+        if student and book:
+            if book.status == "available":
+                book.status = "unavailable"
+                lending = Peminjaman_ongoing(id_buku=id_buku,nim_peminjam=nim)
+                db.session.add(lending)
+                db.session.commit()
+                flash(f'Book borrowed successfully!', 'success')
+            else:
+                flash('Book is not available for borrowing.', 'error')
+        else:
+            flash('Book not found.', 'error')
+            return redirect(url_for('admin_borrow'))
+        
+    flash('Invalid input. Try again.', 'danger')
+    return redirect(url_for('admin_borrow'))
 
 #Habel
 @app.route('/add_book', methods=['POST'])
