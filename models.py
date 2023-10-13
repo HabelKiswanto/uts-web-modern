@@ -39,7 +39,7 @@ class Peminjaman_done(db.Model):
     id_buku = db.Column(db.Integer,db.ForeignKey('catalogue.id_buku')) 
     nim_peminjam = db.Column(db.Integer,db.ForeignKey('students.nim'))
     tanggal_peminjaman = db.Column(db.Date)
-    tanggal_pengembalian = db.Column(db.Date)
+    tanggal_pengembalian = db.Column(db.Date,default=datetime.now().date())
 
 class Catalogue(db.Model):
     id_buku = db.Column('id_buku',db.Integer,primary_key=True)

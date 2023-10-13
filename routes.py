@@ -56,6 +56,10 @@ def admin_borrow():
     return render_template('/admin/borrow.html')
 
 
+@app.route('/admin/return')
+def admin_return():
+    return render_template('/admin/return.html')
+
 @app.route('/login_user',methods=["post"])
 def user_login():
     nim = request.form.get("nim")
@@ -107,6 +111,32 @@ def borrow_book():
                 flash(f'Book borrowed successfully!', 'success')
             else:
                 flash('Book is not available for borrowing.', 'error')
+        else:
+            flash('Book not found.', 'error')
+            return redirect(url_for('admin_borrow'))
+        
+    flash('Invalid input. Try again.', 'danger')
+    return redirect(url_for('admin_borrow'))
+
+@app.route('/return_book',methods=["post"])
+def return_book():
+    id_buku = request.form.get("id_buku")
+    nim = request.form.get("nim")
+    if id_buku != None and nim != None:
+        student = Students.query.filter_by(nim=nim).first()
+        book = Catalogue.query.filter_by(id_buku=id_buku).first()
+        if student and book:
+            ongoing = Peminjaman_ongoing.query.filter_by(id_buku=id_buku,nim_peminjam=nim).first()
+            if ongoing:
+                if book.status == "unavailable":
+                    book.status = "available"
+                    returning = Peminjaman_done(id_buku=id_buku,nim_peminjam=nim,tanggal_peminjaman=ongoing.tanggal_peminjaman)
+                    db.session.add(returning)
+                    Peminjaman_ongoing.query.filter_by(id_buku=id_buku,nim_peminjam=nim).delete()
+                    db.session.commit()
+                    flash(f'Book returned successfully!', 'success')
+                else:
+                    flash('Book was not borrowed.', 'error')
         else:
             flash('Book not found.', 'error')
             return redirect(url_for('admin_borrow'))
