@@ -8,7 +8,7 @@ db_host = 'localhost'
 db_user = 'root'
 db_password = ''
 db_name = 'perpus_calvin'
-connection = pymysql.connect(host='localhost', user='root', password='', database='perpus calvin')
+connection = pymysql.connect(host='localhost', user='root', password='', database='perpus_calvin')
 cursor = connection.cursor()
 
 @app.route('/add_book', methods=['POST'])
