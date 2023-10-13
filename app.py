@@ -60,6 +60,11 @@ class Catalogue(db.Model):
 ### models ###
 
 @app.route('/')
+
+def show_catalogue():
+    catalogue_data = Catalogue.query.all()
+    return render_template('dummy.html', catalogue_data=catalogue_data)
+
 def index():
     print(url_for('static', filename='style.css'))
     return render_template('index.html')
