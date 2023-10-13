@@ -40,3 +40,4 @@ class Catalogue(db.Model):
     author = db.Column(db.String(255))
     genre = db.Column(db.String(255))
     status = db.Column(db.String(255))
+    cover_link = db.Column(db.String(255))

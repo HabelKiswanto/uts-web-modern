@@ -1,4 +1,5 @@
 {% extends "login_layout.html" %}
+{% block content %}
 <body>
     <a href="/" style="color: black;">← Go Back</a>
     <div class="login-container" style="height: 100%;">
@@ -6,7 +7,6 @@
             <div class="logo">
                 <img src="{{ url_for('static', filename='cit-logo-white.png') }}" alt="Bootstrap" width="100" height="80">
             </div>
-{% block content %}
             <h3>NIM</h3>
             <form method="POST" action="/login_user">
             <div class="nim-input">
