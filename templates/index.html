@@ -32,7 +32,7 @@
             </div>
         </div>
     </nav>
-    <div class="main-container">
+    <div class="container">
       <div class="search-box">
         <div class="input-group mb-3">
           <input type="text" class="form-control" placeholder="Search books here" aria-label="Recipient's username" aria-describedby="button-addon2">
@@ -58,28 +58,70 @@
               Sort
             </button>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Sort 1</a></li>
-              <li><a class="dropdown-item" href="#">Sort 2</a></li>
-              <li><a class="dropdown-item" href="#">Sort 3</a></li>
+              <li><a class="dropdown-item" href="?sort_by=tanggal_masuk&order=asc">Date Entered</a></li>
+              <li><a class="dropdown-item" href="?sort_by=id_buku">ID</a></li>
+              <li><a class="dropdown-item" href="?sort_by=nama_buku">Name</a></li>
             </ul>
           </div>
         </div>
       </div>
       
       
-      <div class="books" id="bookContainer">
+      <div class="text-center" id="bookContainer">
+        <div class="row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
         {% for book in catalogue_data %}
-        <div class="card" style="width: 18rem;">
-            <img src="{{ book.cover_link }}" class="card-img-top" alt="No Image">
-            <div class="card-body">
-                <h5 class="card-title">{{ book.nama_buku }}</h5>
-                <p class="card-text">{{ book.deskripsi_buku }}</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
+        <div class="col">
+        <div class="card" style="min-width: 18rem; max-width: 18rem">
+          <img src="{{ book.cover_link }}" class="card-img-top" alt="No Image">
+          <div class="card-body">
+              <h5 class="card-title">{{ book.nama_buku }}</h5>
+              <p class="card-text">{{ book.deskripsi_buku }}</p>
+              <span class="badge bg-success">{{ book.status }}</span>
+              <!-- if book.status == "available" -> span class = bg-success
+              else if book.status == "unavailable" -> span class = bg-danger -->
+          </div>
         </div>
+      </div>
         {% endfor %}
-    </div>
-    
+        </div>
+      </div>
+
       <div class="page-select"></div>
       </div>
-<!-- {% endblock content %} -->
+{% endblock content %}
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Initial display
+        displayBooks('id_buku');
+
+        // Sort by ID
+        $('#sort-by-id').click(function () {
+            displayBooks('id_buku');
+        });
+
+        // Sort by Name
+        $('#sort-by-name').click(function () {
+            displayBooks('nama_buku');
+        });
+
+        // Sort by Date
+        $('#sort-by-date').click(function () {
+            displayBooks('tanggal_terbit');
+        });
+
+        function displayBooks(sortBy) {
+            $.ajax({
+                type: 'GET',
+                url: 'sort_books.php', // Create a PHP script to handle the sorting
+                data: { sort_by: sortBy },
+                success: function (data) {
+                    $('#bookContainer').html(data);
+                }
+            });
+        }
+    });
+</script>

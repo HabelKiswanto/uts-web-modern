@@ -4,7 +4,21 @@ from models import *
 
 @app.route('/')
 def index():
-    catalogue_data = Catalogue.query.all()
+    sort_by = request.args.get('sort_by', 'nama_buku')
+    order = request.args.get('order', 'asc')
+    catalogue_data = Catalogue.query.order_by(sort_by).all()
+
+    if sort_by == 'tanggal_masuk':
+        if order == 'asc':
+            catalogue_data = Catalogue.query.order_by(Catalogue.tanggal_masuk).all()
+        else:
+            catalogue_data = Catalogue.query.order_by(Catalogue.tanggal_masuk.desc()).all()
+    else:
+        if order == 'asc':
+            catalogue_data = Catalogue.query.order_by(sort_by).all()
+        else:
+            catalogue_data = Catalogue.query.order_by(sort_by.desc()).all()
+
     return render_template('index.html', catalogue_data=catalogue_data, title='Index')
 
 def show_catalogue():
@@ -24,6 +38,11 @@ def login():
         return redirect('/')
     else:
         return render_template('login.html',title="Login")
+
+@app.route('/editbook')
+def editbook():
+    catalogue_data = Catalogue.query.all()
+    return render_template('editbook.html', catalogue_data=catalogue_data)
 
 @app.route('/reservation')
 def reservation():
@@ -110,7 +129,9 @@ def add_new_book():
         db.session.commit()
         return jsonify({"message": "Book added successfully."})
     except Exception as e:
+        print(e)
         return jsonify({"error": str(e)})
+
     
 @app.route('/update_book/<int:book_id>', methods=['PUT'])
 def change_book_details(book_id):
@@ -118,19 +139,22 @@ def change_book_details(book_id):
         book = Catalogue.query.get(book_id)
         if book:
             new_data = request.json
-            book.nama_buku = new_data['nama_buku']
-            book.deskripsi_buku = new_data['deskripsi_buku']
-            book.tanggal_masuk = new_data['tanggal_masuk']
-            book.tanggal_terbit = new_data['tanggal_terbit']
-            book.author = new_data['author']
-            book.genre = new_data['genre']
-            book.status = new_data['status']
+            book.nama_buku = new_data['updated_nama_buku']
+            book.deskripsi_buku = new_data['updated_deskripsi_buku']
+            book.tanggal_masuk = new_data['updated_tanggal_masuk']
+            book.tanggal_terbit = new_data['updated_tanggal_terbit']
+            book.author = new_data['updated_author']
+            book.genre = new_data['updated_genre']
+            book.status = new_data['updated_status']
             book.cover_link = new_data['cover_link']
+            
+
             db.session.commit()
             return jsonify({"message": "Book details updated successfully."})
         else:
             return jsonify({"error": "Book not found."})
     except Exception as e:
+        print(e)
         return jsonify({"error": str(e)})
 
 @app.route('/remove_book/<int:book_id>', methods=['DELETE'])

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <title>Book Catalog</title>
 </head>
 <body>
@@ -78,7 +78,7 @@
             </div>
             <div class="row mb-3">
               <label for="status" class="col-sm-3 col-form-label">Image Link:</label>
-              <input type="text" id="link" name="link" class="col-sm-9 form-control" required>
+              <input type="text" id="cover_link" name="cover_link" class="col-sm-9 form-control" required>
             </div>
             <div class="row">
               <div class="col-12 text-center">
@@ -88,45 +88,48 @@
           </form>
         </div>
 
-
         <!-- Form to Update Book Details -->
         <div class="col-md-5 ml-4 mb-8">
           <h2 class="text-center">Update Book Details</h2>
           <form id="updateBookForm" class="col-12">
             <div class="row mb-3">
-              <label for="nama_buku" class="col-sm-3 col-form-label">Nama Buku:</label>
-              <input type="text" id="nama_buku" name="nama_buku" class="col-sm-9 form-control" required>
+              <label for="id_buku" class="col-sm-3 col-form-label">Id Buku:</label>
+              <input type="text" id="id_buku" name="id_buku" class="col-sm-9 form-control" required>
             </div>
             <div class="row mb-3">
-              <label for="deskripsi_buku" class="col-sm-3 col-form-label">Deskripsi Buku:</label>
-              <input type="text" id="deskripsi_buku" name="deskripsi_buku" class="col-sm-9 form-control" required>
+              <label for="updated_nama_buku" class="col-sm-3 col-form-label">Nama Buku:</label>
+              <input type="text" id="updated_nama_buku" name="updated_nama_buku" class="col-sm-9 form-control" required>
             </div>
             <div class="row mb-3">
-              <label for="tanggal_masuk" class="col-sm-3 col-form-label">Tanggal Masuk:</label>
-              <input type="date" id="tanggal_masuk" name="tanggal_masuk" class="col-sm-9 form-control" required>
+              <label for="updated_deskripsi_buku" class="col-sm-3 col-form-label">Deskripsi Buku:</label>
+              <input type="text" id="updated_deskripsi_buku" name="updated_deskripsi_buku" class="col-sm-9 form-control" required>
             </div>
             <div class="row mb-3">
-              <label for="tanggal_terbit" class="col-sm-3 col-form-label">Tanggal Terbit:</label>
-              <input type="date" id="tanggal_terbit" name="tanggal_terbit" class="col-sm-9 form-control" required>
+              <label for="updated_tanggal_masuk" class="col-sm-3 col-form-label">Tanggal Masuk:</label>
+              <input type="date" id="updated_tanggal_masuk" name="updated_tanggal_masuk" class="col-sm-9 form-control" required>
             </div>
             <div class="row mb-3">
-              <label for="author" class="col-sm-3 col-form-label">Author:</label>
-              <input type="text" id="author" name="author" class="col-sm-9 form-control" required>
+              <label for="updated_tanggal_terbit" class="col-sm-3 col-form-label">Tanggal Terbit:</label>
+              <input type="date" id="updated_tanggal_terbit" name="updated_tanggal_terbit" class="col-sm-9 form-control" required>
             </div>
             <div class="row mb-3">
-              <label for="genre" class="col-sm-3 col-form-label">Genre:</label>
-              <input type="text" id="genre" name="genre" class="col-sm-9 form-control" required>
+              <label for="updated_author" class="col-sm-3 col-form-label">Author:</label>
+              <input type="text" id="updated_author" name="updated_author" class="col-sm-9 form-control" required>
             </div>
             <div class="row mb-3">
-              <label for="status" class="col-sm-3 col-form-label">Status:</label>
-              <select class="col-sm-9 form-select" id="status" name="status" required>
+              <label for="updated_genre" class="col-sm-3 col-form-label">Genre:</label>
+              <input type="text" id="updated_genre" name="updated_genre" class="col-sm-9 form-control" required>
+            </div>
+            <div class="row mb-3">
+              <label for="updated_status" class="col-sm-3 col-form-label">Status:</label>
+              <select class="col-sm-9 form-select" id="updated_status" name="updated_status" required>
                 <option selected value="available">Available</option>
                 <option value="unavailable">Unavailable</option>
               </select>
             </div>
             <div class="row mb-3">
-              <label for="status" class="col-sm-3 col-form-label">Image Link:</label>
-              <input type="text" id="link" name="link" class="col-sm-9 form-control" required>
+              <label for="cover_link" class="col-sm-3 col-form-label">Image Link:</label>
+              <input type="text" id="cover_link" name="cover_link" class="col-sm-9 form-control" required>
             </div>
             <div class="row">
               <div class="col-12 text-center">
@@ -195,40 +198,46 @@
     });
 
     // Function to handle form submission to update book details
-    document.getElementById('updateBookForm').addEventListener('submit', function (event) {
-        event.preventDefault();
-        const formData = new FormData(this);
-        const bookId = formData.get('book_id');
-        const data = {
-            nama_buku: formData.get('updated_nama_buku'),
-            deskripsi_buku: formData.get('updated_deskripsi_buku'),
-            tanggal_masuk: formData.get('updated_tanggal_masuk'),
-            tanggal_terbit: formData.get('updated_tanggal_terbit'),
-            author: formData.get('updated_author'),
-            genre: formData.get('updated_genre'),
-            status: formData.get('updated_status'),
-            cover_link: formData.get('cover_link')
-        };
+    
+  document.getElementById('updateBookForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+    const formData = new FormData(this);
+    const bookId = formData.get('id_buku');  // Use the correct ID
+    const data = {
+      updated_nama_buku: formData.get('updated_nama_buku'),
+      updated_deskripsi_buku: formData.get('updated_deskripsi_buku'),
+      updated_tanggal_masuk: formData.get('updated_tanggal_masuk'),
+      updated_tanggal_terbit: formData.get('updated_tanggal_terbit'),
+      updated_author: formData.get('updated_author'),
+      updated_genre: formData.get('updated_genre'),
+      updated_status: formData.get('updated_status'),
+      cover_link: formData.get('cover_link')
+    };
 
-        fetch(`/update_book/${bookId}`, {
-            method: 'PUT',
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        })
+    if (confirm('Double check the book\'s data')) {
+      fetch(`/update_book/${bookId}`, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
         .then(response => response.json())
         .then(data => {
-            if (data.message) {
-                alert("Data updated successfully");
-            } else if (data.error) {
-                alert("Data update failed");
-            }
+          if (data.message) {
+            alert("Data updated successfully");
+          } else if (data.error) {
+            alert("Data update failed");
+          }
         })
         .catch(error => {
-            alert("An error occurred while updating data");
+          alert("An error occurred while updating data");
         });
-    });
+    } else {
+      alert("Data not updated as per your request");
+    }
+  });
+
 
     // Function to handle form submission to remove a book
     document.getElementById('removeBookForm').addEventListener('submit', function (event) {
