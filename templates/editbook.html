@@ -4,23 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="style.css">
     <title>Book Catalog</title>
 </head>
 <body>
-
-<!-- stan kerjain yang ini -->
-<div class="container">
-    <div id="message-container" style="display: none;">
-        <div id="message" class="alert"></div>
-    </div>
-</div>
-
-
     <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
-                <img src="{{ url_for('static', filename='cit-logo-white.png') }}" alt="Logo" width="50" height="40">
+                <img src="cit-logo-white.png" alt="Logo" width="50" height="40">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
@@ -82,8 +73,8 @@
               </select>
             </div>
             <div class="row mb-3">
-              <label for="cover_link" class="col-sm-3 col-form-label">Image Link:</label>
-              <input type="text" id="cover_link" name="cover_link" class="col-sm-9 form-control" required>
+              <label for="status" class="col-sm-3 col-form-label">Image Link:</label>
+              <input type="text" id="link" name="link" class="col-sm-9 form-control" required>
             </div>
             <div class="row">
               <div class="col-12 text-center">
@@ -99,43 +90,39 @@
           <h2 class="text-center">Update Book Details</h2>
           <form id="updateBookForm" class="col-12">
             <div class="row mb-3">
-              <label for="book_id" class="col-sm-3 col-form-label">Book ID:</label>
-              <input type="number" id="book_id" name="book_id" class="col-sm-9 form-control" required>
+              <label for="nama_buku" class="col-sm-3 col-form-label">Nama Buku:</label>
+              <input type="text" id="nama_buku" name="nama_buku" class="col-sm-9 form-control" required>
             </div>
             <div class="row mb-3">
-              <label for="updated_nama_buku" class="col-sm-3 col-form-label">Nama Buku:</label>
-              <input type="text" id="updated_nama_buku" name="nama_buku" class="col-sm-9 form-control" required>
+              <label for="deskripsi_buku" class="col-sm-3 col-form-label">Deskripsi Buku:</label>
+              <input type="text" id="deskripsi_buku" name="deskripsi_buku" class="col-sm-9 form-control" required>
             </div>
             <div class="row mb-3">
-              <label for="updated_deskripsi_buku" class="col-sm-3 col-form-label">Deskripsi Buku:</label>
-              <input type="text" id="updated_deskripsi_buku" name="deskripsi_buku" class="col-sm-9 form-control" required>
+              <label for="tanggal_masuk" class="col-sm-3 col-form-label">Tanggal Masuk:</label>
+              <input type="date" id="tanggal_masuk" name="tanggal_masuk" class="col-sm-9 form-control" required>
             </div>
             <div class="row mb-3">
-              <label for="updated_tanggal_masuk" class="col-sm-3 col-form-label">Tanggal Masuk:</label>
-              <input type="date" id="updated_tanggal_masuk" name="tanggal_masuk" class="col-sm-9 form-control" required>
+              <label for="tanggal_terbit" class="col-sm-3 col-form-label">Tanggal Terbit:</label>
+              <input type="date" id="tanggal_terbit" name="tanggal_terbit" class="col-sm-9 form-control" required>
             </div>
             <div class="row mb-3">
-              <label for="updated_tanggal_terbit" class="col-sm-3 col-form-label">Tanggal Terbit:</label>
-              <input type="date" id="updated_tanggal_terbit" name="tanggal_terbit" class="col-sm-9 form-control" required>
+              <label for="author" class="col-sm-3 col-form-label">Author:</label>
+              <input type="text" id="author" name="author" class="col-sm-9 form-control" required>
             </div>
             <div class="row mb-3">
-              <label for="updated_author" class="col-sm-3 col-form-label">Author:</label>
-              <input type="text" id="updated_author" name="author" class="col-sm-9 form-control" required>
+              <label for="genre" class="col-sm-3 col-form-label">Genre:</label>
+              <input type="text" id="genre" name="genre" class="col-sm-9 form-control" required>
             </div>
             <div class="row mb-3">
-              <label for="updated_genre" class="col-sm-3 col-form-label">Genre:</label>
-              <input type="text" id="updated_genre" name="genre" class="col-sm-9 form-control" required>
-            </div>
-            <div class="row mb-3">
-              <label for="updated_status" class="col-sm-3 col-form-label">Status:</label>
-              <select class="col-sm-9 form-select" id="updated_status" name="status" required>
+              <label for="status" class="col-sm-3 col-form-label">Status:</label>
+              <select class="col-sm-9 form-select" id="status" name="status" required>
                 <option selected value="available">Available</option>
                 <option value="unavailable">Unavailable</option>
               </select>
             </div>
             <div class="row mb-3">
-              <label for="cover_link" class="col-sm-3 col-form-label">Image Link:</label>
-              <input type="text" id="cover_link" name="cover_link" class="col-sm-9 form-control" required>
+              <label for="status" class="col-sm-3 col-form-label">Image Link:</label>
+              <input type="text" id="link" name="link" class="col-sm-9 form-control" required>
             </div>
             <div class="row">
               <div class="col-12 text-center">
@@ -160,112 +147,61 @@
           </form>
           
           <!-- Display Messages -->
-          <!-- <div id="message"></div> -->
+          <div id="message"></div>
         </div>
       </div>
 
-      
     <script>
-     function showMessage(status, message) {
-        const messageContainer = document.getElementById('message-container');
-        const messageElement = document.getElementById('message');
-        messageElement.textContent = message;
+        // Function to send a POST request to add a new book
+        document.getElementById('addBookForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            fetch('/add_book', {
+                method: 'POST',
+                body: JSON.stringify(Object.fromEntries(formData.entries())),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('message').textContent = data.message;
+                });
+        });
 
-        if (status === 'success') {
-            messageContainer.classList.add('alert-success');
-        } else if (status === 'error') {
-            messageContainer.classList.add('alert-danger');
-        }
+        // Function to send a PUT request to update book details
+        document.getElementById('updateBookForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const bookId = formData.get('book_id');
+            fetch(`/update_book/${bookId}`, {
+                method: 'PUT',
+                body: JSON.stringify(Object.fromEntries(formData.entries())),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('message').textContent = data.message;
+                });
+        });
 
-        messageContainer.style.display = 'block';
-
-        // Hide the message after a few seconds (adjust the delay as needed)
-        setTimeout(function () {
-            messageContainer.style.display = 'none';
-            messageContainer.classList.remove('alert-success', 'alert-danger');
-        }, 5000); // Hide after 5 seconds
-    }
-
-    document.getElementById('addBookForm').addEventListener('submit', function (event) {
-        event.preventDefault();
-        const formData = new FormData(this);
-        const data = {
-            nama_buku: formData.get('nama_buku'),
-            deskripsi_buku: formData.get('deskripsi_buku'),
-            tanggal_masuk: formData.get('tanggal_masuk'),
-            tanggal_terbit: formData.get('tanggal_terbit'),
-            author: formData.get('author'),
-            genre: formData.get('genre'),
-            status: formData.get('status'),
-            cover_link: formData.get('cover_link')
-        };
-        
-        fetch('/add_book', {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-        .then(data => {
-            if (data.message) {
-                showMessage('success', data.message);
-            } else if (data.error) {
-                showMessage('error', data.error);
-            }
-        })
-        .catch(error => {
-            showMessage('error', 'An error occurred.');
-        })
-    });
-
-    // Function to handle form submission to update book details
-    document.getElementById('updateBookForm').addEventListener('submit', function (event) {
-        event.preventDefault();
-        const formData = new FormData(this);
-        const bookId = formData.get('book_id');
-        const data = {
-            nama_buku: formData.get('updated_nama_buku'),
-            deskripsi_buku: formData.get('updated_deskripsi_buku'),
-            tanggal_masuk: formData.get('updated_tanggal_masuk'),
-            tanggal_terbit: formData.get('updated_tanggal_terbit'),
-            author: formData.get('updated_author'),
-            genre: formData.get('updated_genre'),
-            status: formData.get('updated_status'),
-            cover_link: formData.get('cover_link')
-        };
-        
-        fetch(`/update_book/${bookId}`, {
-            method: 'PUT',
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-        // .then(response => response.json())
-        // .then(data => {
-        //     document.getElementById('message').textContent = data.message;
-        // });
-    });
-
-    // Function to handle form submission to remove a book
-    document.getElementById('removeBookForm').addEventListener('submit', function (event) {
-        event.preventDefault();
-        const bookId = document.getElementById('remove_book_id').value;
-        
-        fetch(`/remove_book/${bookId}`, {
-            method: 'DELETE',
-        })
-        // .then(response => response.json())
-        // .then(data => {
-        //     document.getElementById('message').textContent = data.message;
-        // });
-    });
+        // Function to send a DELETE request to remove a book
+        document.getElementById('removeBookForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const bookId = document.getElementById('remove_book_id').value;
+            fetch(`/remove_book/${bookId}`, {
+                method: 'DELETE',
+            })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('message').textContent = data.message;
+                });
+        });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/48638eddb5.js" crossorigin="anonymous"></script>
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="script.js"></script>
 </body>
-
-
 </html>

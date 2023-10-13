@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <title>Index Page</title>
+{% extends "layout.html" %}
+
+{% block content %}
 </head>
 <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
@@ -85,44 +80,4 @@
 
       <div class="page-select"></div>
       </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <script src="https://kit.fontawesome.com/48638eddb5.js" crossorigin="anonymous"></script>
-  </body>
-</html>
-
-<script>
-  // Function to fetch and display books
-  function displayBooks() {
-      fetch('/get_books') // Replace with the Flask route to fetch book data
-          .then(response => response.json())
-          .then(data => {
-              const bookContainer = document.getElementById('bookContainer');
-
-              // Clear existing content
-              bookContainer.innerHTML = '';
-
-              // Iterate through the books and create card elements
-              data.forEach(book => {
-                  const card = document.createElement('div');
-                  card.className = 'card';
-
-                  card.innerHTML = `
-                      <img src="${book.cover_link}" class="card-img-top" alt="Book Cover">
-                      <div class="card-body">
-                          <h5 class="card-title">${book.nama_buku}</h5>
-                          <p class="card-text">${book.deskripsi_buku}</p>
-                          <a href="#" class="btn btn-primary">Details</a>
-                      </div>
-                  `;
-
-                  bookContainer.appendChild(card);
-              });
-          })
-          .catch(error => {
-              console.error('Error fetching book data:', error);
-          });
-  }
-
-  // Call the function to initially display books
-  displayBooks();
-</script>
+{% endblock content %}
