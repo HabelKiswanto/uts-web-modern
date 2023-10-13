@@ -42,25 +42,24 @@
       <div class="filter-sort-container">
         <div class="filter">
           <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Filter
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownFilterButton">
+              Asc/Dsc
             </button>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu" id="dropdownFilterMenu">
               <li><a class="dropdown-item" href="#">Filter 1</a></li>
               <li><a class="dropdown-item" href="#">Filter 2</a></li>
-              <li><a class="dropdown-item" href="#">Filter 3</a></li>
             </ul>
           </div>
         </div>
         <div class="sort">
           <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Sort
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownSortButton">
+              Sort by 
             </button>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu" id="dropdownSortMenu">
+              <li><a class="dropdown-item" href="?sort_by=id_buku&order=asc">ID</a></li>
               <li><a class="dropdown-item" href="?sort_by=tanggal_masuk&order=asc">Date Entered</a></li>
-              <li><a class="dropdown-item" href="?sort_by=id_buku">ID</a></li>
-              <li><a class="dropdown-item" href="?sort_by=nama_buku">Name</a></li>
+              <li><a class="dropdown-item" href="?sort_by=nama_buku&order=asc">Name</a></li>
             </ul>
           </div>
         </div>
@@ -94,6 +93,25 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+      const dropdownSortButton = document.querySelector('#dropdownSortButton');
+
+    document.querySelector('#dropdownSortMenu').addEventListener('click', function(event) {
+      const selectedItem = event.target;
+      const selectedItemText = selectedItem.textContent;
+
+      dropdownSortButton.textContent = selectedItemText;
+    });
+    const dropdFilterButton = document.querySelector('#dropdownFilterButton');
+
+    document.querySelector('#dropdownFilterMenu').addEventListener('click', function(event) {
+      const selectedItem = event.target;
+      const selectedItemText = selectedItem.textContent;
+
+      dropdownFilterButton.textContent = selectedItemText;
+    });
+    </script>
+    <script>
+
     $(document).ready(function () {
         // Initial display
         displayBooks('id_buku');
