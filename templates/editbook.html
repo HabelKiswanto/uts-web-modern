@@ -29,10 +29,10 @@
                   <a class="nav-link" href="###">Schedule</a>
               </li>
               <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="sectionDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                       Add
                   </a>
-                  <ul class="dropdown-menu" aria-labelledby="sectionDropdown">
+                  <ul class="dropdown-menu" aria-labelledby="sectionDropdown" id="navbarDropdown">
                       <li><a class="dropdown-item" href="#" onclick="showSection('add-book-section')">Add Book</a></li>
                       <li><a class="dropdown-item" href="#" onclick="showSection('update-book-section')">Update Book</a></li>
                       <li><a class="dropdown-item" href="#" onclick="showSection('remove-book-section')">Remove Book</a></li>
@@ -101,6 +101,7 @@
 
         <!-- Form to Update Book Details -->
       <section id="update-book-section">
+        <div class="row justify-content-center">
         <div class="col-md-5 ml-4 mb-8">
           <h2 class="text-center">Update Book Details</h2>
           <form id="updateBookForm" class="col-12">
@@ -149,23 +150,24 @@
               </div>
             </div>
           </form>
+          </div>
         </div>
       </section>
 
           <!-- Form to Remove a Book -->
         <section id="remove-book-section">
+          <div class="row justify-content-center">
           <h2 class="text-center">Remove a Book</h2>
           <form id="removeBookForm" class="col-8">
             <div class="row mb-3">
               <label for="remove_book_id">Book ID:</label>
               <input type="number" id="remove_book_id" name="book_id" required>
             </div>
-              <div class="row">
               <div class="col-12 text-center">
                 <button type="submit" class="btn btn-primary">Remove Book</button>
-              </div>
             </div>
           </form>
+          </div>
         </section>
           
           <!-- Display Messages -->
@@ -285,9 +287,23 @@
         // Show the selected section
         document.getElementById(sectionId).style.display = 'block';
     }
+
+        document.querySelector('#navbarDropdown .dropdown-item:nth-child(1)').addEventListener('click', function () {
+            showSection('add-book-section');
+        });
+
+        // Add an event listener to the "Add" dropdown options to show the "Update Book" section
+        document.querySelector('#navbarDropdown .dropdown-item:nth-child(2)').addEventListener('click', function () {
+            showSection('update-book-section');
+        });
+
+        // Add an event listener to the "Add" dropdown options to show the "Remove Book" section
+        document.querySelector('#navbarDropdown .dropdown-item:nth-child(3)').addEventListener('click', function () {
+            showSection('remove-book-section');
+        });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/48638eddb5.js" crossorigin="anonymous"></script>
-    <script src="script.js"></script>
+    <script src="static/script.js"></script>
 </body>
 </html>

@@ -1,37 +1,38 @@
-<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Catalogue</title>
+    <title>Dropdown Example</title>
 </head>
 <body>
-    <h1>Book Catalogue</h1>
-    <table>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Date of Entry</th>
-            <th>Date of Publication</th>
-            <th>Author</th>
-            <th>Genre</th>
-            <th>Status</th>
-            <th>Cover Image</th>
-        </tr>
-        {% for book in catalogue_data %}
-        <tr>
-            <td>{{ book.id_buku }}</td>
-            <td>{{ book.nama_buku }}</td>
-            <td>{{ book.deskripsi_buku }}</td>
-            <td>{{ book.tanggal_masuk }}</td>
-            <td>{{ book.tanggal_terbit }}</td>
-            <td>{{ book.author }}</td>
-            <td>{{ book.genre }}</td>
-            <td>{{ book.status }}</td>
-            <td>{{ book.cover_link }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+    <label for="fruits">Select a fruit:</label>
+    <select id="fruits" name="fruits">
+        <option value="apple">Apple</option>
+        <option value="banana">Banana</option>
+    </select>
+
+    <label for="vege">Select a vegetable:</label>
+    <select id="vege" name="vege">
+        <option value="spinach">Spinach</option>
+        <option value="kale">Kale</option>
+    </select>
+
+    <button onclick="showLove()">Show Love</button>
+
+    <p id="result"></p>
+
+    <script>
+        function showLove() {
+            const fruit = document.getElementById("fruits").value;
+            const vegetable = document.getElementById("vege").value;
+            const resultElement = document.getElementById("result");
+
+            if (fruit === "banana" && vegetable === "spinach") {
+                resultElement.textContent = "I love banana and spinach";
+            } else if (fruit === "banana" && vegetable === "kale") {
+                resultElement.textContent = "I love banana and kale";
+            } else {
+                resultElement.textContent = "No love for this combination";
+            }
+        }
+    </script>
 </body>
 </html>
-

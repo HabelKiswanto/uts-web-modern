@@ -1,144 +1,149 @@
 
 body{
-    background-color: #ddd;
+  background-color: #ddd;
 }
 
 #toggle-button{
-    border: none;
+  border: none;
 
 }
 
+#update-book-section,
+#remove-book-section {
+      display: none;
+    }
+
 .navbar {
-  background-color: #660406 !important;
-  margin-bottom: 50px !important;
+background-color: #660406 !important;
+margin-bottom: 50px !important;
 }
 
 .main-container{
-  margin: 0 auto;
-  justify-content: center;
-  align-items: center;
-  width: 75%;
+margin: 0 auto;
+justify-content: center;
+align-items: center;
+width: 75%;
 }
 .schedule-container, .catalogue-container{
-  outline: solid 1px blue;
-  width: 100%;
+outline: solid 1px blue;
+width: 100%;
 }
 
 .filter-sort-container{
-  column-count: 2;
-  column-gap: 10px;
+column-count: 2;
+column-gap: 10px;
 }
 .reservation-options{
-  column-count: 3;
-  column-gap: 10px;
+column-count: 3;
+column-gap: 10px;
 }
 
 
 .filter, .sort,.day,.time,.reserve{
-  display: inline-block;
+display: inline-block;
 }
 
 .card-img-top{
-  background-color: #868e96;
-  width: 100%;
-  height: 250px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+background-color: #868e96;
+width: 100%;
+height: 250px;
+display: flex;
+align-items: center;
+justify-content: center;
 }
 
-.table-bordered {
-  border: 1px solid #dee2e6;
-  width: 100% !important;
+/* .table-bordered {
+border: 1px solid #dee2e6;
+width: 100% !important;
 }
 
 .table-striped tbody tr:nth-child(odd) {
-  background-color: rgba(0, 0, 0, 0.05);
+background-color: rgba(0, 0, 0, 0.05);
 }
 
 .table-striped tbody tr:nth-child(even) {
-  background-color: white;
+background-color: white;
 }
 
 .table th,
 .table td {
-  vertical-align: middle;
-  border: 1px solid #dee2e6;
+vertical-align: middle;
+border: 1px solid #dee2e6;
 }
 
 .table th {
-  text-align: center;
+text-align: center;
 }
 
 .table td {
-  padding: 0.5rem;
+padding: 0.5rem;
 }
 
 .table-bordered > thead > tr > th:first-child,
 .table-bordered > tbody > tr > td:first-child,
 .table-bordered > tfoot > tr > th:first-child,
 .table-bordered > tfoot > tr > td:first-child {
-  border-left: 0;
+border-left: 0;
 }
 
 .table-bordered > thead > tr > th:last-child,
 .table-bordered > tbody > tr > td:last-child,
 .table-bordered > tfoot > tr > th:last-child,
 .table-bordered > tfoot > tr > td:last-child {
-  border-right: 0;
+border-right: 0;
 }
 
 .table-bordered > tbody > tr:last-child > th,
-.table
+.table */
 
 .login-container{
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100vh;
+display: flex;
+justify-content: center;
+align-items: center;
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100vh;
 }
 
 .login-box{
-  background-color: #aaa;
-	padding: 30px;
-  width: 25%;
-	border-radius: 30px;
-	margin: auto;
-	position: relative;
+background-color: #aaa;
+padding: 30px;
+width: 25%;
+border-radius: 30px;
+margin: auto;
+position: relative;
 }
 .book-image{
-  float: left;
+float: left;
 }
 
 
 .logo, .login-button{
-  display: flex;
-	justify-content: center;
-	align-items: center;
+display: flex;
+justify-content: center;
+align-items: center;
 }
 h1{
-    color : #333;
+  color : #333;
 }
 
 .catalogue-editor-container{
-  margin: 0 auto;
-  justify-content: center;
-  width: 75%;
+margin: 0 auto;
+justify-content: center;
+width: 75%;
 }
 
 .book-details{
-  display: flex;
+display: flex;
 }
 
 .book-image{
-  float: left;
-  margin-right: 10px;
+float: left;
+margin-right: 10px;
 }
 
 .details-input{
-  flex: 1;
+flex: 1;
 }
