@@ -33,38 +33,41 @@
         </div>
     </nav>
     <div class="container">
-      <div class="search-box">
-        <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Search books here" aria-label="Recipient's username" aria-describedby="button-addon2">
-          <button class="btn btn-outline-secondary" type="button" id="button-addon2"><i class="fa-solid fa-magnifying-glass" style="color: #000000;"></i></button>
-        </div>
+      <div class="input-group mb-3">
+        <input type="text" id="searchbar" class="form-control" placeholder="Search books here" aria-label="Recipient's username" aria-describedby="button-addon2">
       </div>
+    
+    
       <div class="filter-sort-container">
         <div class="filter">
-          <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownFilterButton">
-              Asc/Dsc
-            </button>
-            <ul class="dropdown-menu" id="dropdownFilterMenu">
-              <li><a class="dropdown-item" href="#">Filter 1</a></li>
-              <li><a class="dropdown-item" href="#">Filter 2</a></li>
-            </ul>
-          </div>
+          <label for="sort-options">Sort by:</label>
+          <select id="sort-options">
+            <option value="id_buku">ID</option>
+            <option value="tanggal_masuk">entry date</option>
+            <option value="nama_buku">Name</option>
+          </select>
         </div>
-        <div class="sort">
-          <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownSortButton">
-              Sort by 
-            </button>
-            <ul class="dropdown-menu" id="dropdownSortMenu">
-              <li><a class="dropdown-item" href="?sort_by=id_buku&order=asc">ID</a></li>
-              <li><a class="dropdown-item" href="?sort_by=tanggal_masuk&order=asc">Date Entered</a></li>
-              <li><a class="dropdown-item" href="?sort_by=nama_buku&order=asc">Name</a></li>
-            </ul>
-          </div>
+        <div class="filter">
+          <label for="sort-order">Sort order:</label>
+          <select id="sort-order">
+            <option value="asc">Ascending</option>
+            <option value="dsc">Descending</option>
+          </select>
         </div>
+        
+        <div class="filter">
+          <label for="availability">Availability</label>
+          <select id="availability">
+            <option value="available">Available</option>
+            <option value="all">all</option>
+          </select>
+        </div>
+        
       </div>
-      
+      <button onclick="sortit()">Go</button>
+    </div>
+    
+    
       
       <div class="text-center" id="bookContainer">
         <div class="row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
@@ -76,8 +79,6 @@
               <h5 class="card-title">{{ book.nama_buku }}</h5>
               <p class="card-text">{{ book.deskripsi_buku }}</p>
               <span class="badge bg-success">{{ book.status }}</span>
-              <!-- if book.status == "available" -> span class = bg-success
-              else if book.status == "unavailable" -> span class = bg-danger -->
           </div>
         </div>
       </div>
@@ -87,59 +88,26 @@
 
       <div class="page-select"></div>
       </div>
-{% endblock content %}
-
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
 <script>
-      const dropdownSortButton = document.querySelector('#dropdownSortButton');
+  function sortit() {
+      const sortopt = document.getElementById("sort-options").value;
+      const sortord = document.getElementById("sort-order").value;
+      const available = document.getElementById("availability").value;
+      const searchbar = document.getElementById("searchbar").value;
 
-    document.querySelector('#dropdownSortMenu').addEventListener('click', function(event) {
-      const selectedItem = event.target;
-      const selectedItemText = selectedItem.textContent;
+      // Construct the URL based on selected options
+      const url = `/?sort_by=${sortopt}&order=${sortord}&availability=${available}&searchbar=${searchbar}`;
 
-      dropdownSortButton.textContent = selectedItemText;
-    });
-    const dropdFilterButton = document.querySelector('#dropdownFilterButton');
-
-    document.querySelector('#dropdownFilterMenu').addEventListener('click', function(event) {
-      const selectedItem = event.target;
-      const selectedItemText = selectedItem.textContent;
-
-      dropdownFilterButton.textContent = selectedItemText;
-    });
-    </script>
-    <script>
-
-    $(document).ready(function () {
-        // Initial display
-        displayBooks('id_buku');
-
-        // Sort by ID
-        $('#sort-by-id').click(function () {
-            displayBooks('id_buku');
-        });
-
-        // Sort by Name
-        $('#sort-by-name').click(function () {
-            displayBooks('nama_buku');
-        });
-
-        // Sort by Date
-        $('#sort-by-date').click(function () {
-            displayBooks('tanggal_terbit');
-        });
-
-        function displayBooks(sortBy) {
-            $.ajax({
-                type: 'GET',
-                url: 'sort_books.php', // Create a PHP script to handle the sorting
-                data: { sort_by: sortBy },
-                success: function (data) {
-                    $('#bookContainer').html(data);
-                }
-            });
-        }
-    });
+      // Redirect to the URL
+      window.location.href = url;
+  }
 </script>
+{% endblock content %}
+
+</body>
+</html>

@@ -1,0 +1,128 @@
+{% extends "layout.html" %}
+
+{% block content %}
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="{{ url_for('static', filename='cit-logo-white.png') }}" alt="Bootstrap" width="50" height="40">
+            </a>
+          
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="/">Library</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="schedule">Schedule</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" aria-current="page" href="reservation">Reservation</a>
+                </li>
+              </ul>
+              <ul class="navbar-nav ms-auto">
+                  <li class="nav-item">
+                    <a class="btn btn-outline-light" href="login">Login/Register</a>
+                  </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+      <div class="search-box">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Search books here" aria-label="Recipient's username" aria-describedby="button-addon2">
+          <button class="btn btn-outline-secondary" type="button" id="button-addon2"><i class="fa-solid fa-magnifying-glass" style="color: #000000;"></i></button>
+        </div>
+      </div>
+      <div class="filter-sort-container">
+        <div class="filter">
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownFilterButton">
+              Asc/Dsc
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Filter 1</a></li>
+              <li><a class="dropdown-item" href="#">Filter 2</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="sort">
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownSortButton">
+              Sort by 
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="?sort_by=id_buku&order=asc">ID</a></li>
+              <li><a class="dropdown-item" href="?sort_by=tanggal_masuk&order=asc">Date Entered</a></li>
+              <li><a class="dropdown-item" href="?sort_by=nama_buku&order=asc">Name</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      
+      <div class="text-center" id="bookContainer">
+        <div class="row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
+        {% for book in catalogue_data %}
+        <div class="col">
+        <div class="card" style="min-width: 18rem; max-width: 18rem">
+          <img src="{{ book.cover_link }}" class="card-img-top" alt="No Image">
+          <div class="card-body">
+              <h5 class="card-title">{{ book.nama_buku }}</h5>
+              <p class="card-text">{{ book.deskripsi_buku }}</p>
+              <span class="badge bg-success">{{ book.status }}</span>
+              <!-- if book.status == "available" -> span class = bg-success
+              else if book.status == "unavailable" -> span class = bg-danger -->
+          </div>
+        </div>
+      </div>
+        {% endfor %}
+        </div>
+      </div>
+
+      <div class="page-select"></div>
+      </div>
+{% endblock content %}
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+      
+
+    $(document).ready(function () {
+        // Initial display
+        displayBooks('id_buku');
+
+        // Sort by ID
+        $('#sort-by-id').click(function () {
+            displayBooks('id_buku');
+        });
+
+        // Sort by Name
+        $('#sort-by-name').click(function () {
+            displayBooks('nama_buku');
+        });
+
+        // Sort by Date
+        $('#sort-by-date').click(function () {
+            displayBooks('tanggal_terbit');
+        });
+
+        function displayBooks(sortBy) {
+            $.ajax({
+                type: 'GET',
+                url: 'sort_books.php', // Create a PHP script to handle the sorting
+                data: { sort_by: sortBy },
+                success: function (data) {
+                    $('#bookContainer').html(data);
+                }
+            });
+        }
+    });
+</script>

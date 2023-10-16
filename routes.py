@@ -1,25 +1,46 @@
 from flask import *
+from flask import Flask, request, render_template
 from app import app
+from sqlalchemy import desc
 from models import *
 
 @app.route('/')
 def index():
     sort_by = request.args.get('sort_by', 'nama_buku')
     order = request.args.get('order', 'asc')
-    catalogue_data = Catalogue.query.order_by(sort_by).all()
+    availability = request.args.get('availability', 'all')
+    searchbar = request.args.get('searchbar', '')
+
+    # Log the updated URL
+    updated_url = request.url
+    print("Updated URL:", updated_url)
+
+    # Your sorting and filtering logic here
+    catalogue_data = Catalogue.query
+
+    if availability == 'available':
+        catalogue_data = catalogue_data.filter(Catalogue.status == 'available')
+
+    if searchbar:
+        catalogue_data = catalogue_data.filter(Catalogue.nama_buku.ilike(f'%{searchbar}%'))
 
     if sort_by == 'tanggal_masuk':
         if order == 'asc':
-            catalogue_data = Catalogue.query.order_by(Catalogue.tanggal_masuk).all()
+            catalogue_data = catalogue_data.order_by(Catalogue.tanggal_masuk)
         else:
-            catalogue_data = Catalogue.query.order_by(Catalogue.tanggal_masuk.desc()).all()
+            catalogue_data = catalogue_data.order_by(desc(Catalogue.tanggal_masuk))
     else:
         if order == 'asc':
-            catalogue_data = Catalogue.query.order_by(sort_by).all()
-        else:
-            catalogue_data = Catalogue.query.order_by(sort_by.desc()).all()
+            catalogue_data = catalogue_data.order_by(sort_by)
+        elif order == 'dsc':
+            catalogue_data = catalogue_data.order_by(desc(sort_by))
+
+    catalogue_data = catalogue_data.all()
 
     return render_template('index.html', catalogue_data=catalogue_data, title='Index')
+
+if __name__ == '__main__':
+    app.run(debug=True)
 
 def show_catalogue():
     catalogue_data = Catalogue.query.all()
