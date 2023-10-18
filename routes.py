@@ -41,10 +41,8 @@ def index():
 
         catalogue_data = catalogue_data.all()
 
-        return render_template('index.html', catalogue_data=catalogue_data, title='Index')
+        return render_template('index.html', catalogue_data=catalogue_data, title='Home')
 
-if __name__ == '__main__':
-    app.run(debug=True)
 
 def show_catalogue():
     catalogue_data = Catalogue.query.all()
@@ -146,19 +144,21 @@ def user_register():
         print("test")
         # Check if password = confirmation
         if password != conf_pass:
-            return "Password and confirm password does not match"
+            flash("Password and confirm password does not match",'error')
+            return redirect(url_for('admin_register_page'))
 
         # Check if the username is already taken
         existing_user = Students.query.filter_by(nim=nim).first()
         if existing_user:
-            return "Student already exists. Check the NIM."
+            flash("Student already exists. Check the NIM.",'error')
+            return redirect(url_for('admin_register_page'))
 
         new_user = Students(nim=nim,full_name=full_name,password=password)
         db.session.add(new_user)
         db.session.commit()
-
-        return redirect(url_for('admin_catalogue'))
-        
+        flash("Registration successful.", "success")
+        return redirect(url_for('admin_register_page'))
+    return redirect(url_for('admin_register_page'))        
 
 
 @app.route('/admin/return')
@@ -208,17 +208,23 @@ def borrow_book():
     if id_buku != None and nim != None:
         student = Students.query.filter_by(nim=nim).first()
         book = Catalogue.query.filter_by(id_buku=id_buku).first()
-        if student and book:
-            if book.status == "available":
-                book.status = "unavailable"
-                lending = Peminjaman_ongoing(id_buku=id_buku,nim_peminjam=nim)
-                db.session.add(lending)
-                db.session.commit()
-                flash(f'Book borrowed successfully!', 'success')
-            else:
-                flash('Book is not available for borrowing.', 'error')
-        else:
+
+        if not student:
+            flash('Student not found.', 'error')
+            return redirect(url_for('admin_return'))
+        if not book: 
             flash('Book not found.', 'error')
+            return redirect(url_for('admin_return'))
+        
+        if book.status == "available":
+            book.status = "unavailable"
+            lending = Peminjaman_ongoing(id_buku=id_buku,nim_peminjam=nim)
+            db.session.add(lending)
+            db.session.commit()
+            flash(f'Book borrowed successfully!', 'success')
+            return redirect(url_for('admin_borrow'))
+        else:
+            flash('Book is not available for borrowing.', 'error')
             return redirect(url_for('admin_borrow'))
         
     flash('Invalid input. Try again.', 'danger')
@@ -231,24 +237,33 @@ def return_book():
     if id_buku != None and nim != None:
         student = Students.query.filter_by(nim=nim).first()
         book = Catalogue.query.filter_by(id_buku=id_buku).first()
-        if student and book:
-            ongoing = Peminjaman_ongoing.query.filter_by(id_buku=id_buku,nim_peminjam=nim).first()
-            if ongoing:
-                if book.status == "unavailable":
-                    book.status = "available"
-                    returning = Peminjaman_done(id_buku=id_buku,nim_peminjam=nim,tanggal_peminjaman=ongoing.tanggal_peminjaman)
-                    db.session.add(returning)
-                    Peminjaman_ongoing.query.filter_by(id_buku=id_buku,nim_peminjam=nim).delete()
-                    db.session.commit()
-                    flash(f'Book returned successfully!', 'success')
-                else:
-                    flash('Book was not borrowed.', 'error')
-        else:
+        if not student:
+            flash('Student not found.', 'error')
+            return redirect(url_for('admin_return'))
+        if not book: 
             flash('Book not found.', 'error')
-            return redirect(url_for('admin_borrow'))
+            return redirect(url_for('admin_return'))
+        
+        ongoing = Peminjaman_ongoing.query.filter_by(id_buku=id_buku).first()
+        if ongoing:
+            if ongoing.nim_peminjam != nim:
+                flash('This student is not borrowing this book.', 'error')
+                return redirect(url_for('admin_return'))
+            
+            if book.status == "unavailable":
+                book.status = "available"
+                returning = Peminjaman_done(id_buku=id_buku,nim_peminjam=nim,tanggal_peminjaman=ongoing.tanggal_peminjaman)
+                db.session.add(returning)
+                Peminjaman_ongoing.query.filter_by(id_buku=id_buku,nim_peminjam=nim).delete()
+                db.session.commit()
+                flash(f'Book returned successfully!', 'success')
+                return redirect(url_for('admin_return'))
+        else:
+            flash('Book is not currently borrowed.', 'error')
+            return redirect(url_for('admin_return'))
         
     flash('Invalid input. Try again.', 'danger')
-    return redirect(url_for('admin_borrow'))
+    return redirect(url_for('admin_return'))
 
 #Habel
 @app.route('/add_book', methods=['POST'])
@@ -309,3 +324,7 @@ def remove_book(book_id):
             return jsonify({"error": "Book not found."})
     except Exception as e:
         return jsonify({"error": str(e)})
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
