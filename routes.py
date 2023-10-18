@@ -140,17 +140,15 @@ def user_register():
         full_name = request.form.get('nama')
         password = request.form.get('pass')
         conf_pass = request.form.get('confirm_pass')
-
-        print("test")
         # Check if password = confirmation
         if password != conf_pass:
-            flash("Password and confirm password does not match",'error')
+            flash("Password and confirm password does not match",'danger')
             return redirect(url_for('admin_register_page'))
 
         # Check if the username is already taken
         existing_user = Students.query.filter_by(nim=nim).first()
         if existing_user:
-            flash("Student already exists. Check the NIM.",'error')
+            flash("Student already exists. Check the NIM.",'danger')
             return redirect(url_for('admin_register_page'))
 
         new_user = Students(nim=nim,full_name=full_name,password=password)
@@ -176,7 +174,6 @@ def user_login():
     if nim != None and password != None:
         student = Students.query.filter_by(nim=nim).first()
         if student and (password == student.password):
-            flash('Login successful!', 'success')
             resp = make_response(redirect(url_for('index')))
             resp.set_cookie('login_status','logged in')
             return resp
@@ -191,13 +188,12 @@ def admin_login():
     if username != None and password != None:
         acc = Admin.query.filter_by(username=username).first()
         if acc and (password == acc.password):
-            flash('Login successful!', 'success')
             resp = make_response(redirect(url_for('admin_catalogue')))
             resp.set_cookie('login_status','admin logged in')
             return resp
         
     flash('Invalid credentials. Please try again.', 'danger')
-    return redirect(url_for('admin'))
+    return redirect('/admin')
 
 
 
@@ -210,10 +206,10 @@ def borrow_book():
         book = Catalogue.query.filter_by(id_buku=id_buku).first()
 
         if not student:
-            flash('Student not found.', 'error')
+            flash('Student not found.', 'danger')
             return redirect(url_for('admin_return'))
         if not book: 
-            flash('Book not found.', 'error')
+            flash('Book not found.', 'danger')
             return redirect(url_for('admin_return'))
         
         if book.status == "available":
@@ -224,7 +220,7 @@ def borrow_book():
             flash(f'Book borrowed successfully!', 'success')
             return redirect(url_for('admin_borrow'))
         else:
-            flash('Book is not available for borrowing.', 'error')
+            flash('Book is not available for borrowing.', 'danger')
             return redirect(url_for('admin_borrow'))
         
     flash('Invalid input. Try again.', 'danger')
@@ -238,16 +234,16 @@ def return_book():
         student = Students.query.filter_by(nim=nim).first()
         book = Catalogue.query.filter_by(id_buku=id_buku).first()
         if not student:
-            flash('Student not found.', 'error')
+            flash('Student not found.', 'danger')
             return redirect(url_for('admin_return'))
         if not book: 
-            flash('Book not found.', 'error')
+            flash('Book not found.', 'danger')
             return redirect(url_for('admin_return'))
         
         ongoing = Peminjaman_ongoing.query.filter_by(id_buku=id_buku).first()
         if ongoing:
             if ongoing.nim_peminjam != nim:
-                flash('This student is not borrowing this book.', 'error')
+                flash('This student is not borrowing this book.', 'danger')
                 return redirect(url_for('admin_return'))
             
             if book.status == "unavailable":
@@ -259,7 +255,7 @@ def return_book():
                 flash(f'Book returned successfully!', 'success')
                 return redirect(url_for('admin_return'))
         else:
-            flash('Book is not currently borrowed.', 'error')
+            flash('Book is not currently borrowed.', 'danger')
             return redirect(url_for('admin_return'))
         
     flash('Invalid input. Try again.', 'danger')

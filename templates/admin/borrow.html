@@ -23,7 +23,7 @@
                   <a class="nav-link" aria-current="page" href="/admin/catalogue">Catalogue</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="/admin/borrow">Borrow</a>
+                <a class="nav-link active" aria-current="page" href="/admin/borrow">Borrow</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" aria-current="page" href="/admin/return">Return</a>
@@ -62,15 +62,17 @@
             </div>
           </form>
           
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
+          {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+          {% for category, message in messages %}
+          <div class="alert alert-{{ category }}" role="alert">
             <ul class="flashes">
-                {% for message in messages %}
-                    <li>{{ message }}</li>
+                    {{ message }}
                 {% endfor %}
             </ul>
-        {% endif %}
-    {% endwith %}
+          </div>
+          {% endif %}
+      {% endwith %}
     </div>
 
     
