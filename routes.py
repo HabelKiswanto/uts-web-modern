@@ -141,7 +141,6 @@ def user_register():
         password = request.form.get('pass')
         conf_pass = request.form.get('confirm_pass')
 
-        print("test")
         # Check if password = confirmation
         if password != conf_pass:
             flash("Password and confirm password does not match",'danger')
@@ -195,7 +194,7 @@ def admin_login():
             return resp
         
     flash('Invalid credentials. Please try again.', 'danger')
-    return redirect(url_for('admin'))
+    return redirect('/admin')
 
 
 
