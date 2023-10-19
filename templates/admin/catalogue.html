@@ -34,6 +34,10 @@
                 <li class="nav-item">
                   <a class="nav-link" aria-current="page" href="/admin/editbook">Change Books</a>
                 </li>
+                <li class="nav-item">
+                  <a class="nav-link" aria-current="page" href="/admin/fines">Fine</a>
+                </li>
+
             </ul>
             <ul class="navbar-nav ms-auto">
               <li class="nav-item">
@@ -44,34 +48,8 @@
     </div>
   </nav>
     <div class="main-container">
-        <div class="filter-sort-container">
-            <div class="filter">
-              <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Filter
-                </button>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Filter 1</a></li>
-                  <li><a class="dropdown-item" href="#">Filter 2</a></li>
-                  <li><a class="dropdown-item" href="#">Filter 3</a></li>
-                </ul>
-              </div>
-            </div>
-            <div class="sort">
-              <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Sort
-                </button>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Sort 1</a></li>
-                  <li><a class="dropdown-item" href="#">Sort 2</a></li>
-                  <li><a class="dropdown-item" href="#">Sort 3</a></li>
-                </ul>
-              </div>
-            </div>
-        </div>
         <div class="schedule-container">
-            <table class="table table-bordered table-striped">
+            <table class="table table-responsive table-bordered table-striped">
               <tr>
                 <th>ID</th>
                 <th>Name</th>
@@ -94,7 +72,6 @@
                 <td>{{ book.genre }}</td>
                 <td>{{ book.status }}</td>
                 <td>{{ book.cover_link }}</td>
-                <td><button type="button" class="btn btn-warning">Edit</button>
               </tr>
               {% endfor %}
               </table>
