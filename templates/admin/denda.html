@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Denda</title>
+</head>
+<body>
+    
+  <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <img src="{{ url_for('static', filename='cit-logo-white.png') }}" alt="Logo" width="50" height="40">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/admin/catalogue">Catalogue</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" aria-current="page" href="/admin/borrow">Borrow</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" aria-current="page" href="/admin/return">Return</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" aria-current="page" href="/admin/register">Register New User</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" aria-current="page" href="/admin/editbook">Change Books</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="/admin/fine">Fine</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <a class="btn btn-outline-light" href="/admin/">Logout</a>
+              </li>
+            </ul>
+        </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="fine-container">
+        <table class="table table-responsive table-bordered table-striped">
+          <tr>
+            <th>NIM</th>
+            <th>ID Buku</th>
+            <th>Judul Buku</th>
+            <th>Telat (Hari)</th>
+            <th>Denda</th>
+        </tr>
+          {% for nim, id_buku,nama_buku, days_overdue, denda in overdue_books %}
+          <tr>
+            <td>{{ nim }}</td>
+            <td>{{ id_buku }}</td>
+            <td>{{ nama_buku }}</td>
+            <td>{{ days_overdue }}</td>
+            <td>{{ denda }}</td>
+            <td>
+              <form method="post" action="{{ url_for('move_to_done', nim=nim, id_buku=id_buku) }}">
+                <button type="submit" value="Move to Done" class="btn btn-primary">Kembalikan Buku</button>
+            </form>
+            </td>
+          </tr>
+          {% endfor %}
+          </table>
+      </div>
+</div>
+  </div>

@@ -1,7 +1,7 @@
 from flask import *
 from flask import Flask, request, render_template
 from app import app
-from sqlalchemy import desc
+from sqlalchemy import desc,text
 from models import *
 
 @app.route('/')
@@ -140,15 +140,17 @@ def user_register():
         full_name = request.form.get('nama')
         password = request.form.get('pass')
         conf_pass = request.form.get('confirm_pass')
+
+        print("test")
         # Check if password = confirmation
         if password != conf_pass:
-            flash("Password and confirm password does not match",'danger')
+            flash("Password and confirm password does not match",'error')
             return redirect(url_for('admin_register_page'))
 
         # Check if the username is already taken
         existing_user = Students.query.filter_by(nim=nim).first()
         if existing_user:
-            flash("Student already exists. Check the NIM.",'danger')
+            flash("Student already exists. Check the NIM.",'error')
             return redirect(url_for('admin_register_page'))
 
         new_user = Students(nim=nim,full_name=full_name,password=password)
@@ -174,6 +176,7 @@ def user_login():
     if nim != None and password != None:
         student = Students.query.filter_by(nim=nim).first()
         if student and (password == student.password):
+            flash('Login successful!', 'success')
             resp = make_response(redirect(url_for('index')))
             resp.set_cookie('login_status','logged in')
             return resp
@@ -188,12 +191,13 @@ def admin_login():
     if username != None and password != None:
         acc = Admin.query.filter_by(username=username).first()
         if acc and (password == acc.password):
+            flash('Login successful!', 'success')
             resp = make_response(redirect(url_for('admin_catalogue')))
             resp.set_cookie('login_status','admin logged in')
             return resp
         
     flash('Invalid credentials. Please try again.', 'danger')
-    return redirect('/admin')
+    return redirect(url_for('admin'))
 
 
 
@@ -206,10 +210,10 @@ def borrow_book():
         book = Catalogue.query.filter_by(id_buku=id_buku).first()
 
         if not student:
-            flash('Student not found.', 'danger')
+            flash('Student not found.', 'error')
             return redirect(url_for('admin_return'))
         if not book: 
-            flash('Book not found.', 'danger')
+            flash('Book not found.', 'error')
             return redirect(url_for('admin_return'))
         
         if book.status == "available":
@@ -220,7 +224,7 @@ def borrow_book():
             flash(f'Book borrowed successfully!', 'success')
             return redirect(url_for('admin_borrow'))
         else:
-            flash('Book is not available for borrowing.', 'danger')
+            flash('Book is not available for borrowing.', 'error')
             return redirect(url_for('admin_borrow'))
         
     flash('Invalid input. Try again.', 'danger')
@@ -234,16 +238,16 @@ def return_book():
         student = Students.query.filter_by(nim=nim).first()
         book = Catalogue.query.filter_by(id_buku=id_buku).first()
         if not student:
-            flash('Student not found.', 'danger')
+            flash('Student not found.', 'error')
             return redirect(url_for('admin_return'))
         if not book: 
-            flash('Book not found.', 'danger')
+            flash('Book not found.', 'error')
             return redirect(url_for('admin_return'))
         
         ongoing = Peminjaman_ongoing.query.filter_by(id_buku=id_buku).first()
         if ongoing:
             if ongoing.nim_peminjam != nim:
-                flash('This student is not borrowing this book.', 'danger')
+                flash('This student is not borrowing this book.', 'error')
                 return redirect(url_for('admin_return'))
             
             if book.status == "unavailable":
@@ -255,7 +259,7 @@ def return_book():
                 flash(f'Book returned successfully!', 'success')
                 return redirect(url_for('admin_return'))
         else:
-            flash('Book is not currently borrowed.', 'danger')
+            flash('Book is not currently borrowed.', 'error')
             return redirect(url_for('admin_return'))
         
     flash('Invalid input. Try again.', 'danger')
@@ -320,6 +324,30 @@ def remove_book(book_id):
             return jsonify({"error": "Book not found."})
     except Exception as e:
         return jsonify({"error": str(e)})
+    
+@app.route('/admin/fines')
+def view_fine():
+    query = text("""
+        SELECT Peminjaman_ongoing.nim_peminjam, Peminjaman_ongoing.id_buku, Catalogue.nama_buku, DATEDIFF(NOW(), Peminjaman_ongoing.tanggal_peminjaman) - 14 AS days_overdue
+        FROM Peminjaman_ongoing
+        INNER JOIN Catalogue ON Peminjaman_ongoing.id_buku = Catalogue.id_buku
+        WHERE DATEDIFF(NOW(), Peminjaman_ongoing.tanggal_peminjaman) > 14
+    """)
+    result = db.session.execute(query)
+    overdue_books = [(row.nim_peminjam, row.id_buku, row.nama_buku ,row.days_overdue, max(0, row.days_overdue) * 2000) for row in result]
+    return render_template('/admin/denda.html',title='Fine', overdue_books=overdue_books)
+
+@app.route('/admin/fines/delete/<nim>/<id_buku>', methods=['POST'])
+def move_to_done(nim, id_buku):
+    data_to_move = Peminjaman_ongoing.query.filter_by(nim_peminjam=nim, id_buku=id_buku).first()
+    to_done = returning = Peminjaman_done(id_buku=id_buku,nim_peminjam=nim,tanggal_peminjaman=data_to_move.tanggal_peminjaman)
+    db.session.add(to_done)
+    Peminjaman_ongoing.query.filter_by(id_buku=id_buku,nim_peminjam=nim).delete()
+    # Commit the changes to the database
+    db.session.commit()
+
+    flash('Book has been returned', 'success')
+    return redirect(url_for('view_fine'))
 
 
 if __name__ == '__main__':
