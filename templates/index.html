@@ -65,15 +65,14 @@
         
       </div>
       <button onclick="sortit()">Go</button>
-    </div>
-    
-    
+      
+      
       
       <div class="text-center" id="bookContainer">
         <div class="row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
-        {% for book in catalogue_data %}
-        <div class="col">
-        <div class="card" style="min-width: 18rem; max-width: 18rem">
+          {% for book in catalogue_data %}
+          <div class="col">
+            <div class="card" >
           <img src="{{ book.cover_link }}" class="card-img-top" alt="No Image">
           <div class="card-body">
               <h5 class="card-title">{{ book.nama_buku }}</h5>
@@ -88,6 +87,7 @@
 
       <div class="page-select"></div>
       </div>
+    </div>
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

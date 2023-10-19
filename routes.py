@@ -1,7 +1,7 @@
 from flask import *
 from flask import Flask, request, render_template
 from app import app
-from sqlalchemy import desc
+from sqlalchemy import desc,text
 from models import *
 
 @app.route('/')
@@ -17,7 +17,7 @@ def index():
 
         # Log the updated URL
         updated_url = request.url
-        print("Updated URL:", updated_url)
+        # print("Updated URL:", updated_url)
 
         # Your sorting and filtering logic here
         catalogue_data = Catalogue.query
@@ -140,6 +140,7 @@ def user_register():
         full_name = request.form.get('nama')
         password = request.form.get('pass')
         conf_pass = request.form.get('confirm_pass')
+
         # Check if password = confirmation
         if password != conf_pass:
             flash("Password and confirm password does not match",'danger')
@@ -320,6 +321,31 @@ def remove_book(book_id):
             return jsonify({"error": "Book not found."})
     except Exception as e:
         return jsonify({"error": str(e)})
+    
+@app.route('/admin/fines')
+def view_fine():
+    query = text("""
+        SELECT Peminjaman_ongoing.nim_peminjam, Peminjaman_ongoing.id_buku, Catalogue.nama_buku, DATEDIFF(NOW(), Peminjaman_ongoing.tanggal_peminjaman) - 14 AS days_overdue
+        FROM Peminjaman_ongoing
+        INNER JOIN Catalogue ON Peminjaman_ongoing.id_buku = Catalogue.id_buku
+        WHERE DATEDIFF(NOW(), Peminjaman_ongoing.tanggal_peminjaman) > 14
+    """)
+    result = db.session.execute(query)
+    overdue_books = [(row.nim_peminjam, row.id_buku, row.nama_buku ,row.days_overdue, max(0, row.days_overdue) * 2000) for row in result]
+    return render_template('/admin/denda.html',title='Fine', overdue_books=overdue_books)
+
+@app.route('/admin/fines/delete/<nim>/<id_buku>', methods=['POST'])
+def move_to_done(nim, id_buku):
+    data_to_move = Peminjaman_ongoing.query.filter_by(nim_peminjam=nim, id_buku=id_buku).first()
+    to_done = returning = Peminjaman_done(id_buku=id_buku,nim_peminjam=nim,tanggal_peminjaman=data_to_move.tanggal_peminjaman)
+    db.session.add(to_done)
+    Peminjaman_ongoing.query.filter_by(id_buku=id_buku,nim_peminjam=nim).delete()
+    Catalogue.query.filter_by(id_buku=id_buku).first().status = "available"
+    # Commit the changes to the database
+    db.session.commit()
+
+    flash('Book has been returned', 'success')
+    return redirect(url_for('view_fine'))
 
 
 if __name__ == '__main__':

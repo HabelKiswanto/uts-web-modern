@@ -1,7 +1,6 @@
 {% extends "login_layout.html" %}
 {% block content %}
 <body>
-    <a href="/" style="color: black;">← Go Back</a>
     <div class="login-container" style="height: 100%;">
         <div class="login-box">
             <div class="logo">
@@ -11,13 +10,13 @@
             <form method="POST" action="/login_user">
             <div class="nim-input">
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" aria-label="nim" aria-describedby="basic-addon2" name="nim" id="nim">
+                    <input type="text" class="form-control" aria-label="nim" aria-describedby="basic-addon2" name="nim" id="nim" required>
                 </div>              
             </div>
             <h3>Password</h3>
             <div class="password-input">
                 <div class="input-group mb-3">
-                    <input type="password" class="form-control" aria-label="Password" aria-describedby="basic-addon2" name="password" nim="password">
+                    <input type="password" class="form-control" aria-label="Password" aria-describedby="basic-addon2" name="password" nim="password" required>
                 </div>
             </div>
 
@@ -25,6 +24,17 @@
                 <button type="submit" class="btn btn-primary">Log In</button>
             </div>
             </form>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+          {% for category, message in messages %}
+          <div class="alert alert-{{ category }}" role="alert">
+            <ul class="flashes">
+                    {{ message }}
+                {% endfor %}
+            </ul>
+          </div>
+          {% endif %}
+      {% endwith %}
         </div>
     </div>
 
